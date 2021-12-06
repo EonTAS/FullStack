@@ -6,3 +6,10 @@ User Stories:
 https://docs.google.com/spreadsheets/d/1NcOiJ0tNaxB6tHOtiMbEldtN8dBKBVe7acP4-AYfuMU/edit#gid=0
 
 Sketches:
+
+
+
+used
+
+django
+allauth
