@@ -24,12 +24,17 @@
         <div class="project-container col-10 offset-1">
             <div class="row mt-1 mb-2"><hr></div>
             <div class="row">
-                {% for project in projects %}
                     <div class="col-sm-6 col-md-6 col-lg-3">
                         <div class="card h-100 border-0">
-                            <a href="{% url 'project_details' project.id %}">
-                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+                            {% if project.image %}
+                                <a href="">
+                                    <img class="card-img-top img-fluid" src="{{project.image.url}}" alt="{{project.name}}">
+                                </a>
+                            {% else %}
+                            <a href="">
+                                <img class="card-img-top img-fluid" src="{{ MEDIA_URL}}noimage.png" alt="{{project.name}}">
                             </a>
+                            {%endif%}
                             <div class="card-body pb-0">
                                 <p class="mb-0">{{ project.name }}</p>
                             </div>
@@ -46,25 +51,6 @@
                         </div>
                     </div>
 
-                    {% if forloop.counter|divisibleby:1%}
-                    <div class="col-12 d-sm-none">
-                        <hr>
-                    </div>
-                    {%endif%}
-                    {% if forloop.counter|divisibleby:2%}
-                    <div class="col-12 d-none d-sm-block d-md-block d-lg-none">
-                        <hr>
-                    </div>
-                    {%endif%}
-                    
-                    {% if forloop.counter|divisibleby:4%}
-                    <div class="col-12 d-none d-lg-block d-xl-block">
-                        <hr>
-                    </div>
-                    {%endif%}
-
-                    
-                {% endfor %}
             </div>
         </div>
     </div>

@@ -57,6 +57,18 @@ body {
     border: 1px solid black !important;
 }
 
+.overlay {
+    height: 100%;
+    width: 90%;
+    top: 5%;
+    left: 5%;
+    position: fixed;
+    background: #FFF7;
+    z-index: -1;
+}
+
+
+
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
@@ -78,5 +90,16 @@ body {
 
     .header-container {
         padding-top: 164px;
+    }
+}
+/* fixed top navbar only on medium and up */
+@media (max-width: 991px) {
+
+    .header-container {
+        padding-top: 116px;
+    }
+
+    body {
+        height: calc(100vh-116px);
     }
 }
