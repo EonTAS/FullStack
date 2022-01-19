@@ -17,12 +17,31 @@
     <div class="row">
         <div class="col text-center mt-3">
             <h2 class="logo-font">My past projects</h2>
+            {% for category in categories %}
+                <a class="text-muted" href="{%url 'projects'%}?category={{category.name}}">
+                    {{category.friendly_name}}
+                </a>
+            {% endfor %}
             <hr class="w-50 mb-1">
         </div>
     </div>
     <div class="row">
         <div class="project-container col-10 offset-1">
-            <div class="row mt-1 mb-2"><hr></div>
+            <div class="row mt-1 mb-2">
+                <div class="col-12 col-md-6 order-md-last d-flex justify-content-center justify-content-md-end">
+                    <select id="sort-selector" class="border-{%if sorting != 'None_None'%}info{%else%}black{%endif%}">
+                        {% for possibleSorting in possibleSortings %}
+                            <option value="{{possibleSorting.name}}" {%if sorting == possibleSorting.name%}selected{%endif%}>{{possibleSorting.friendlyName}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 order-md-first">
+                    <p class="text-muted mt-3 text-center text-md-left">
+                        {{projects|length}} Projects {%if search%} found for <strong>"{{search}}"</strong> {%endif%}
+                    </p>
+                </div>
+
+            </div>
             <div class="row">
                 {% for project in projects %}
                     <div class="col-sm-6 col-md-6 col-lg-3">
@@ -36,6 +55,12 @@
                             <div class="card-footer bg-white pt-0 bnorder-0 text-left">
                                 <div class="row">
                                     <div class="col">
+                                        {% if project.category %} 
+                                        <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
+                                            {{project.category.friendly_name}}
+                                        </a>
+                                        {% endif %}
+
                                         <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
                                         {% if project.price %}
                                         <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
@@ -69,4 +94,27 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block postloadjs %} 
+{{block.super}}
+<script type = "text/javascript">
+    $('#sort-selector').change(function() {
+        var selector = $(this)
+        var currentUrl = new URL(window.location);
+
+        var selectedVal = selector.val()
+        if(selectedVal != "reset") {
+            var sort = selectedVal.split("_")[0]
+            var dir = selectedVal.split("_")[1]
+
+            currentUrl.searchParams.set("sort", sort)
+            currentUrl.searchParams.set("direction", dir)
+        } else {
+            currentUrl.searchParams.delete("sort")
+            currentUrl.searchParams.delete("direction")
+        }
+        window.location.replace(currentUrl)
+    })
+</script>
 {% endblock %}

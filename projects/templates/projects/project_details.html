@@ -41,6 +41,11 @@
                             <div class="card-footer bg-white pt-0 bnorder-0 text-left">
                                 <div class="row">
                                     <div class="col">
+                                        {% if project.category %} 
+                                        <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
+                                            {{project.category.friendly_name}}</p>
+                                        </a>
+                                        {% endif %}
                                         <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
                                         {% if project.price %}
                                         <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
