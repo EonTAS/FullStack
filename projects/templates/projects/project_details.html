@@ -57,7 +57,22 @@
                     </div>
 
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card h-100 border-0">
+                        Leave a comment
+                    </div>
+                    {%for comment in comments%}
+                        <div class="card h-100 border-0">
+                            {{comment.owner}} on {{comment.created_on}}
+                            {{comment.body}}
+                        </div>
+                    {%endfor%}
+                </div>
+                <hr>
+            </div>
         </div>
     </div>
+
 </div>
 {% endblock %}

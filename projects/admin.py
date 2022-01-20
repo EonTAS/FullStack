@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category
+from .models import Project, Category, Comment
 # Register your models here.
 
 
@@ -18,3 +18,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Project)#, ProjectAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Comment)

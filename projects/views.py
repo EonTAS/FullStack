@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
-from .models import Project, Category
+from .models import Project, Category, Comment
 
 # Create your views here.
 def all_projects(request):
@@ -62,7 +62,11 @@ def all_projects(request):
 
 def project_details(request, id):
     project = get_object_or_404(Project, pk=id)
+    comments = Comment.objects.all()
+    comments.filter(item=project)
+    print(comments)
     context = {
-        'project': project
+        'project': project,
+        'comments': comments
     }
     return render(request, "projects/project_details.html", context)

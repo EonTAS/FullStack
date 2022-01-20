@@ -6,6 +6,7 @@ body {
     /*background: url('/media/homepage_background_cropped.jpg') no-repeat center center fixed;*/
     background-image: linear-gradient(60deg, #577, #222);
     background-size: cover;
+    background-attachment: fixed;
     height: calc(100vh - 164px);
     color: #555;
     font-family: 'Lato';
