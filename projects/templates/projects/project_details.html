@@ -16,7 +16,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col text-center mt-3">
-            <h2 class="logo-font">My past projects</h2>
+            <h2 class="logo-font">{{ project.name }}</h2>
             <hr class="w-50 mb-1">
         </div>
     </div>
@@ -24,55 +24,71 @@
         <div class="project-container col-10 offset-1">
             <div class="row mt-1 mb-2"><hr></div>
             <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-3">
-                        <div class="card h-100 border-0">
-                            {% if project.image %}
-                                <a href="">
-                                    <img class="card-img-top img-fluid" src="{{project.image.url}}" alt="{{project.name}}">
-                                </a>
-                            {% else %}
-                            <a href="">
-                                <img class="card-img-top img-fluid" src="{{ MEDIA_URL}}noimage.png" alt="{{project.name}}">
-                            </a>
-                            {%endif%}
-                            <div class="card-body pb-0">
-                                <p class="mb-0">{{ project.name }}</p>
-                            </div>
-                            <div class="card-footer bg-white pt-0 bnorder-0 text-left">
-                                <div class="row">
-                                    <div class="col">
-                                        {% if project.category %} 
-                                        <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
-                                            {{project.category.friendly_name}}</p>
-                                        </a>
-                                        {% endif %}
-                                        <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
-                                        {% if project.price %}
-                                        <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
-                                        {% endif %}
-                                    </div>
+                <div class="col-sm-6 col-md-6 col-lg-3">
+                    <div class="card h-100 border-0">
+                        <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+
+                        <div class="card-body pb-0">
+                            <p class="mb-0">{{ project.name }}</p>
+                        </div>
+                        <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                            <div class="row">
+                                <div class="col">
+                                    {% if project.category %} 
+                                    <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
+                                        {{project.category.friendly_name}}</p>
+                                    </a>
+                                    {% endif %}
+                                    <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
+                                    {% if project.price %}
+                                    <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                </div>
             </div>
+            <hr>
             <div class="row">
-                <div class="col">
-                    <div class="card h-100 border-0">
-                        Leave a comment
-                    </div>
+                <div class="col comments" style="padding: 10px;">
                     {%for comment in comments%}
-                        <div class="card h-100 border-0">
-                            {{comment.owner}} on {{comment.created_on}}
-                            {{comment.body}}
+                        <div class="card border-0">
+                            <b>{{comment.owner}}</b>
+                            <div class="card-body pb-0">
+                                <p class="mb-0">
+                                    {{comment.body}}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                                <i>made on {{comment.created_on}}</i>
+                            </div>
                         </div>
+                        <hr>
                     {%endfor%}
+                    {% if logged_in %}
+                    <div class="card h-10 border-0">
+                        <h5 class="card-title">
+                            Leave a Comment!
+                        </h5>
+                        {% load crispy_forms_tags %}
+                        <div class="card-body pb-0">
+                            <form method="post" style="margin-top: 1.3em;">
+                                {{ comment_form | crispy }}
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                            </form>
+                        </div>
+                        <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                            <i>or don't</i>
+                        </div>
+                        
+                    </div>
+                    {% endif %}
                 </div>
                 <hr>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}

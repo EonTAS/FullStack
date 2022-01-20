@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Project, Category, Comment
+from .forms import CommentForm
 
 # Create your views here.
 def all_projects(request):
@@ -63,10 +64,24 @@ def all_projects(request):
 def project_details(request, id):
     project = get_object_or_404(Project, pk=id)
     comments = project.comment_set.all()
-    comments.filter(item=project)
-    print(comments)
+
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.item = project
+            # Save the comment to the database
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+
     context = {
         'project': project,
-        'comments': comments
+        'comments': comments,
+        "comment_form": comment_form
     }
     return render(request, "projects/project_details.html", context)

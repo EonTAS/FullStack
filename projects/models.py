@@ -34,7 +34,8 @@ class Project(models.Model):
 class Comment(models.Model):
     item = models.ForeignKey('Project', null=True, blank=True, on_delete=models.SET_NULL)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
-    body = models.TextField()
+    header = models.CharField(max_length=30)
+    body = models.TextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
