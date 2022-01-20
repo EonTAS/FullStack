@@ -62,7 +62,7 @@ def all_projects(request):
 
 def project_details(request, id):
     project = get_object_or_404(Project, pk=id)
-    comments = Comment.objects.all()
+    comments = project.comment_set.all()
     comments.filter(item=project)
     print(comments)
     context = {
