@@ -74,6 +74,7 @@ def project_details(request, id):
             new_comment = comment_form.save(commit=False)
             # Assign the current post to the comment
             new_comment.item = project
+            new_comment.owner = request.user
             # Save the comment to the database
             new_comment.save()
     else:

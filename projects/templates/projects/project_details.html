@@ -54,7 +54,7 @@
                 <div class="col comments" style="padding: 10px;">
                     {%for comment in comments%}
                         <div class="card border-0">
-                            <b>{{comment.owner}}</b>
+                            <b>{{comment.owner}} - {{comment.header}}</b>
                             <div class="card-body pb-0">
                                 <p class="mb-0">
                                     {{comment.body}}
@@ -66,24 +66,20 @@
                         </div>
                         <hr>
                     {%endfor%}
-                    {% if logged_in %}
-                    <div class="card h-10 border-0">
-                        <h5 class="card-title">
-                            Leave a Comment!
-                        </h5>
-                        {% load crispy_forms_tags %}
-                        <div class="card-body pb-0">
-                            <form method="post" style="margin-top: 1.3em;">
-                                {{ comment_form | crispy }}
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-                            </form>
+                    {% if request.user.is_authenticated %}
+                        <div class="card h-10 border-0">
+                            <h5 class="card-title">
+                                Leave a Comment!
+                            </h5>
+                            {% load crispy_forms_tags %}
+                            <div class="card-body pb-0">
+                                <form method="post" style="margin-top: 1.3em;">
+                                    {{ comment_form | crispy }}
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="card-footer bg-white pt-0 bnorder-0 text-left">
-                            <i>or don't</i>
-                        </div>
-                        
-                    </div>
                     {% endif %}
                 </div>
                 <hr>

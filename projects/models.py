@@ -23,10 +23,10 @@ class Project(models.Model):
     startDate = models.DateField()
     endDate = models.DateField(null=True, blank=True)
 
-    image_url = models.URLField(max_length=1024, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+    suggester = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+    payed_for = models.BooleanField(default=False)
     
     def __str__(self):
         return self.name
