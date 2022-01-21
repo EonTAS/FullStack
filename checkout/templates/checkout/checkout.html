@@ -15,30 +15,37 @@
 <div class="overlay"></div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col text-center mt-3">
-            <h2 class="logo-font">{{ project.name }}</h2>
-            <hr class="w-50 mb-1">
-        </div>
-    </div>
-    <div class="row">
         <div class="project-container col-10 offset-1">
-            <div class="row mt-1 mb-2"><hr></div>
             <div class="row">
-                {% if request.user.is_authenticated %}
+                <div class="col-12 col-lg-6 order-lg-last mb-5">
+                    draw all the stuff about the project here plzthx
+                </div>
+                <div class="col-12 col-lg-6">
                     <div class="card h-10 border-0">
                         <h5 class="card-title">
-                            Leave a Comment!
+                            Pay here!
                         </h5>
                         {% load crispy_forms_tags %}
                         <div class="card-body pb-0">
                             <form method="post" style="margin-top: 1.3em;">
                                 {{ order_form | crispy }}
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                                <fieldset class"px-3">
+                                    <legend class="fieldset-label email text-black">Payment</legend>
+                                    <!-- STRIPE magic stuff-->
+                                    <div class="mb-3" id="card-element"></div>
+                                    <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                                </fieldset>
+                                <div class="btn rounded-0" id="submit-button">
+
+                                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                                    <span>Your card will be charged <strong>£{{project.price|floatformat:2}}</strong></span>
+                                </div>
+
                             </form>
                         </div>
                     </div>
-                {% endif %}
+                </div>
             </div>
         </div>
     </div>

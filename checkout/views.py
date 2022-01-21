@@ -7,6 +7,9 @@ from projects.models import Project
 # Create your views here.
 def checkout(request, id):
     project = get_object_or_404(Project, pk=id)
+    if not request.user.is_authenticated:                
+        messages.error(request, "no search entered")
+        return redirect(reverse('checkout'))
 
     if request.method == 'POST':
         order_form = OrderForm(data=request.POST)
