@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %} 
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %} 
+<div class="overlay"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col text-center mt-3">
+            <h2 class="logo-font">{{ project.name }}</h2>
+            <hr class="w-50 mb-1">
+        </div>
+    </div>
+    <div class="row">
+        <div class="project-container col-10 offset-1">
+            <div class="row mt-1 mb-2"><hr></div>
+            <div class="row">
+                {% if request.user.is_authenticated %}
+                    <div class="card h-10 border-0">
+                        <h5 class="card-title">
+                            Leave a Comment!
+                        </h5>
+                        {% load crispy_forms_tags %}
+                        <div class="card-body pb-0">
+                            <form method="post" style="margin-top: 1.3em;">
+                                {{ order_form | crispy }}
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
