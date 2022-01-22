@@ -27,26 +27,10 @@
                 <div class="col-12 col-lg-6">
                     <div class="card h-10 border-0">
                         <h5 class="card-title">
-                            Pay here!
+                            Your order information is below. A confirmation email will be sent to <strong>{{order.email}}</strong>
                         </h5>
-                        {% load crispy_forms_tags %}
                         <div class="card-body pb-0">
-                            <form method="post" action="{%url 'checkout' project.id %}" id = "payment-form" style="margin-top: 1.3em;">
-                                {{ order_form | crispy }}
-                                {% csrf_token %}
-                                <fieldset class="px-3">
-                                    <legend class="fieldset-label email text-black">Payment</legend>
-                                    <!-- STRIPE magic stuff-->
-                                    <div class="mb-3" id="card-element"></div>
-                                    <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-                                </fieldset>
-                                <div class="btn rounded-0" id="submit-button">
-
-                                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-                                    <span>Your card will be charged <strong>£{{project.price|floatformat:2}}</strong></span>
-                                </div>
-
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
