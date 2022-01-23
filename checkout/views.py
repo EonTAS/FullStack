@@ -3,12 +3,30 @@ from .forms import OrderForm
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
-
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
 from projects.models import Project 
 from .models import Commission
 
 import stripe
+
+@require_POST
+def cache_checkout_data(request):
+    print("hi")
+    try:
+
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'username': request.user,
+            'item': request.POST.get('item')
+        })
+        print(stripe.PaymentIntent)
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, 'sorry your payment failed to go through, please try again later')
+        return HttpResponse(content=e, status=400)
 
 # Create your views here.
 def checkout(request, id):
