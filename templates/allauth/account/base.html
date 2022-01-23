@@ -9,7 +9,17 @@
             </div>
         </div>
     </div>
-  {% endblock %}
+  {% endblock %}    
+  {% if messages %}
+  <div>
+    <strong>Messages:</strong>
+    <ul>
+      {% for message in messages %}
+      <li>{{message}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
   <div class="overlay"></div>
   <div class="container-fluid col-10 offset-1">
     <div class="row ">
