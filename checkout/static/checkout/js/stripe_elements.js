@@ -1,7 +1,7 @@
 var stripePublicKey = $('#id_stripe_public_key').text().slice(1,-1)
 var clientSecret = $('#id_client_secret').text().slice(1,-1)
 
-var item_id = $('#id_project').text()
+var item = $('#id_project').text()
 var stripe = Stripe(stripePublicKey)
 
 var elements = stripe.elements();
@@ -42,7 +42,7 @@ form.addEventListener('submit', function(ev) {
     var postData = {
         'csrfmiddlewaretoken': csrfToken,
         'client_secret': clientSecret,
-        'item': item_id
+        'item': item
     }
     var url = '/checkout/cache_checkout/'
     $.post(url, postData).done(function() {

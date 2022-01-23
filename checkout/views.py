@@ -13,13 +13,12 @@ import stripe
 
 @require_POST
 def cache_checkout_data(request):
-    print("hi")
     try:
 
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe.PaymentIntent.modify(pid, metadata={
-            'username': request.user,
+            'user': request.user.id,
             'item': request.POST.get('item')
         })
         print(stripe.PaymentIntent)
@@ -47,11 +46,13 @@ def checkout(request, id):
 
     if request.method == 'POST':
         order_form = OrderForm(data=request.POST)
+        pid = request.POST.get('client_secret').split('_secret')[0]
         if order_form.is_valid():
             order = order_form.save(commit=False)
             order.commItem = project
             order.user = request.user
             order.order_price = round(project.price * 100)
+            order.stripe_pid = pid
             order.save()
             return redirect(reverse('checkout_success', args=[order.order_number]))
         messages.error(request, "There was an error with your form.")

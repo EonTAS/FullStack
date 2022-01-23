@@ -27,6 +27,8 @@ class Commission(models.Model):
     commItem = models.OneToOneField(Project, null=False, blank=False, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, on_delete=models.SET_NULL)
 
+    stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
+
     def _generate_order_number(self):
         """
         Generate a random, unique order number using UUID
