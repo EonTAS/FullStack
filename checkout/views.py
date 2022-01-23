@@ -35,7 +35,7 @@ def checkout(request, id):
             order.user = request.user
             order.order_price = round(project.price * 100)
             order.save()
-            return redirect(reverse('success', args=[order.order_number]))
+            return redirect(reverse('checkout_success', args=[order.order_number]))
         messages.error(request, "There was an error with your form.")
     else:
         order_form = OrderForm()
