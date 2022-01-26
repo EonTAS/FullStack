@@ -30,9 +30,13 @@ def cache_checkout_data(request):
 # Create your views here.
 def checkout(request, id):
     project = get_object_or_404(Project, pk=id)
+    if hasattr(project, 'commission'):
+        messages.error(request, "item already funded")
+        return redirect(reverse('home'))
+    
     if not request.user.is_authenticated:                
         messages.error(request, "no search entered")
-        return redirect(reverse('checkout'))
+        return redirect(reverse('home'))
 
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY

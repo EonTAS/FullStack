@@ -65,6 +65,9 @@
                                         {% if project.price %}
                                         <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
                                         {% endif %}
+                                        {% if project.commission %} 
+                                            funded by {{project.commission.user}}
+                                        {%endif%}
                                     </div>
                                 </div>
                             </div>
