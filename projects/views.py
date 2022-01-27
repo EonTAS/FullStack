@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404, resolve_url
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Project, Category, Comment
-from .forms import CommentForm
+from .forms import CommentForm, ProjectForm
 
 # Create your views here.
 def all_projects(request):
@@ -86,3 +86,40 @@ def project_details(request, id):
         "comment_form": comment_form
     }
     return render(request, "projects/project_details.html", context)
+
+
+def project_request(request):
+    project_form = None
+    costDistribution = {
+        "shortterm Codes and Mods": 20,
+        "mediumterm Codes and Mods": 30,
+        "longterm Codes and Mods": 40,
+        "shortterm Art": 15,
+        "mediumterm Art": 25,
+        "longterm Art": 35,
+        "shortterm Miscellaneous": 10,
+        "mediumterm Miscellaneous": 20,
+        "longterm Miscellaneous": 25,
+    }
+    if request.method == 'POST':
+        project_form = ProjectForm(data=request.POST)
+        if project_form.is_valid():
+            # Create Comment object but don't save to database yet
+            project = project_form.save(costDistribution=costDistribution)
+            # Assign the current post to the comment
+            # Save the comment to the database
+            if request.POST["action"] == "fund":
+                return redirect(resolve_url('checkout',id=project.id))
+            else:
+                return redirect(resolve_url('project_details', id=project.id))
+
+
+    else:
+        project_form = ProjectForm()
+    
+    context = {
+        "project_form": project_form,
+        "costDistribution": costDistribution
+    }
+
+    return render(request, "projects/project_request.html", context)

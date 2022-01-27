@@ -35,7 +35,7 @@ def checkout(request, id):
         return redirect(reverse('home'))
     
     if not request.user.is_authenticated:                
-        messages.error(request, "no search entered")
+        messages.error(request, "please login before trying to fund a project")
         return redirect(reverse('home'))
 
     stripe_public_key = settings.STRIPE_PUBLIC_KEY

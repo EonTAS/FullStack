@@ -8,12 +8,10 @@ class Category(models.Model):
     class  Meta:
         verbose_name_plural = 'Categories'
     def __str__(self):
-        return self.name
-    def get_friendly_name(self):
         return self.friendly_name
 
 class Project(models.Model):
-    category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT)
 
     name = models.CharField(max_length=254)
     description = models.TextField()
