@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 {% load static %} 
 
-{% block page_header %}
-    <div class="container header-container">
-        <div class="row">
-            <div class="col">
-                
-            </div>
-        </div>
-    </div>
-{% endblock %}
 
 {% block content %} 
 <div class="overlay"></div>
@@ -20,17 +11,17 @@
                 <div class="col comments" style="padding: 10px;">
                     <div class="card h-10 border-0">
                         <h5 class="card-title">
-                            Leave a Comment!
+                            Suggest a new Project for me!
                         </h5>
                         {% load crispy_forms_tags %}
-                        <div class="card-body pb-0">
+                        <div class="card-body pb-3">
                             <form method="post" style="margin-top: 1.3em;" >
                                 {{ project_form | crispy }}
                                 <!-- calculate a price based on category + timescale-->
 
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-primary btn-lg" name="action" value="submit">Submit</button>
-                                <button type="submit" class="btn btn-primary btn-lg" name="action" value="fund">Submit and Proceed to Fund</button>
+                                <button type="submit" class="btn btn-info btn-lg" name="action" value="fund">Submit and Proceed to Fund</button>
                             </form>
                         </div>
                     </div>
