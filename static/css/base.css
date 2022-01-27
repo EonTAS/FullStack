@@ -68,7 +68,13 @@ body {
     z-index: -1;
 }
 
-
+.message-container {
+    position:fixed;
+    z-index: 800;
+    width:90%;
+    padding-top: 164px;
+    left:5%
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
@@ -88,14 +94,14 @@ body {
         z-index: 1030;
     }
 
-    .header-container {
+    .header-container, .message-container{
         padding-top: 164px;
     }
 }
 /* fixed top navbar only on medium and up */
 @media (max-width: 991px) {
 
-    .header-container {
+    .header-container, .message-container{
         padding-top: 116px;
     }
 

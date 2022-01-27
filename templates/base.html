@@ -124,12 +124,14 @@
   {% if messages %}
   <div class="message-container">
     <div>
-      <strong>Messages:</strong>
-      <ul>
-        {% for message in messages %}
-        <li>{{message}}</li>
-        {% endfor %}
-      </ul>
+      {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
     </div>
 
   </div>
@@ -142,6 +144,11 @@
   
     {% block content %}
     {% endblock %}
+
+    {%block footer %}
+      <div style="height: 50px;">
+      </div>
+    {%endblock%}
 
   {% endblock %}
 
