@@ -19,7 +19,7 @@ class ProjectForm(forms.ModelForm):
     scale = forms.ChoiceField(label="Project Scale", choices=((None, 'Select Timescale'), ("shortterm", '1 week'), ("mediumterm", '1 month'), ("longterm", '3 months')))
 
 
-    priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price")
+    priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price to fund")
 
     def save(self, costDistribution, commit=True):
         instance = super(ProjectForm, self).save(commit=False)
@@ -41,3 +41,12 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ('name', 'category', 'description', 'image')
+        labels = {'name': "Project Title"}
+        widgets = {
+            'name': forms.TextInput(
+                attrs={'placeholder': 'Enter a succint name for your suggestion'}),
+            'description': forms.Textarea(
+                attrs={'placeholder': 'Describe in as much detail as possible what you want from the project'}),
+        }
+    
+    field_order = ['name', 'category', 'scale', 'priceEstimate', 'description', 'image']
