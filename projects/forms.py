@@ -21,7 +21,7 @@ class ProjectForm(forms.ModelForm):
 
     priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price to fund")
 
-    def save(self, costDistribution, commit=True):
+    def save(self, costDistribution, suggester, commit=True):
         instance = super(ProjectForm, self).save(commit=False)
         instance.startDate = datetime.now()
         scale = self.cleaned_data["scale"]
@@ -33,6 +33,7 @@ class ProjectForm(forms.ModelForm):
             instance.endDate = instance.startDate+timedelta(months=3)
 
         instance.price = costDistribution[str(scale) + " " + str(instance.category)]
+        instance.suggester = suggester
   
         if commit:
             instance.save()

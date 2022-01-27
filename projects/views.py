@@ -105,7 +105,7 @@ def project_request(request):
         project_form = ProjectForm(data=request.POST)
         if project_form.is_valid():
             # Create Comment object but don't save to database yet
-            project = project_form.save(costDistribution=costDistribution)
+            project = project_form.save(costDistribution=costDistribution, suggester=request.user)
             # Assign the current post to the comment
             # Save the comment to the database
             if request.POST["action"] == "fund":

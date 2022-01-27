@@ -30,7 +30,7 @@
                 <div class="col-12 col-md-6">
                     <div class="project-details-container mb-5 mt-md-5">
                         <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
-                        <p class="lead mb-0 text-left font-weight-bold">Funding cost: £{{ project.price }}</p>
+                        <p class="lead mb-0 text-left font-weight-bold">Funding cost: £{{ project.price }} {% if project.commission %}- <i>funded</i>{%endif%} </p>
                         {% if project.category %}
                             <p class="small mt-1 mb-0">
                                 <a class="text-muted" href="{% url 'projects' %}?category={{ project.category.name }}">
@@ -48,8 +48,12 @@
                         {% endif %}
                         <p class="mt-3">{{ project.description }}</p>
 
+                        {% if project.suggester %}
+                            <p class="mt-3"><i>initially suggested by <strong>{{project.suggester}}</strong></i></p>    
+                        {%endif%}
+                    
                         {% if project.commission %} 
-                            <p class="mt-3">funded by {{project.commission.user}}</p>                            
+                            <p class="mt-3"><i>funded by <strong>{{project.commission.user}}</strong></i></p>               
                         {% elif request.user.is_authenticated %}
                             <div class="text-center">
                                 <a class="btn btn-primary float-center" href="{%url 'checkout' project.id%}" role="button">Fund this project for £{{project.price}}!</a>
@@ -59,7 +63,6 @@
                                 <a class="btn btn-info float-center" href="#" role="button">Please log in if you want to fund this item!</a>
                             </div>
                         {%endif%}
-                        
                     </div>
                 </div>
             </div>
