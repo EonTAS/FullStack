@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "allauth/base.html" %}
 
 {% block body %}
   {% block page_header %}
@@ -18,8 +18,8 @@
             <hr class="w-50 mb-1">
         </div>
     </div>
-      <div class="row">
-          <div class="col mt-3 p-3"">
+      <div class="row bg-white rounded">
+          <div class="col mt-3 p-3">
             {% block content %}
             {%endblock%}
           </div>
