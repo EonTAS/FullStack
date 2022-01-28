@@ -12,11 +12,13 @@
             </div>
         </li>
 
+        {% if request.user.is_authenticated %}
         <li class="nav-item dropdown">
-            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="#" id="yours-link">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{%url 'projects_funded'%}" id="yours-link">
                 Your Items
             </a>
         </li>
+        {% endif %}
 
         <li class="nav-item dropdown">
             <a class="logo-font font-weight-bold nav-link text-black mr-5" href="{%url 'project_request'%}" id="newCommision-link">
