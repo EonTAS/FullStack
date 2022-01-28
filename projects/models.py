@@ -21,7 +21,7 @@ class Project(models.Model):
     startDate = models.DateField()
     endDate = models.DateField(null=True, blank=True)
 
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="media/submitted")
 
     suggester = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
     payed_for = models.BooleanField(default=False)

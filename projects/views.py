@@ -102,7 +102,7 @@ def project_request(request):
         "longterm Miscellaneous": 25,
     }
     if request.method == 'POST':
-        project_form = ProjectForm(data=request.POST)
+        project_form = ProjectForm(request.POST, request.FILES)
         if project_form.is_valid():
             # Create Comment object but don't save to database yet
             project = project_form.save(costDistribution=costDistribution, suggester=request.user)
@@ -123,3 +123,17 @@ def project_request(request):
     }
 
     return render(request, "projects/project_request.html", context)
+
+def projects_funded(request):
+    if not request.user.is_authenticated:
+        return redirect("home")
+    funded = request.user.commission_set.all()
+    funded_projects = [commission.commItem for commission in funded]
+    print(funded_projects)
+
+    
+
+    context = {
+        'projects': funded_projects,
+    }
+    return render(request, "projects/projects_funded.html", context)
