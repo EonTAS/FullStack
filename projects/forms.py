@@ -18,7 +18,6 @@ class CommentForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     scale = forms.ChoiceField(label="Project Scale", choices=((None, 'Select Timescale'), ("shortterm", '1 week'), ("mediumterm", '1 month'), ("longterm", '3 months')))
 
-
     priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price to fund")
 
     def save(self, costDistribution, suggester, commit=True):
@@ -28,9 +27,9 @@ class ProjectForm(forms.ModelForm):
         if (scale == "shortterm"):
             instance.endDate = instance.startDate+timedelta(weeks=2)
         elif (scale == "midterm"):
-            instance.endDate = instance.startDate+timedelta(months=1)
+            instance.endDate = instance.startDate+timedelta(weeks=4)
         elif (scale == "longterm"):
-            instance.endDate = instance.startDate+timedelta(months=3)
+            instance.endDate = instance.startDate+timedelta(weeks=12)
 
         instance.price = costDistribution[str(scale) + " " + str(instance.category)]
         instance.suggester = suggester
