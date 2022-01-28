@@ -41,3 +41,20 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment "{self.body}" by {self.owner}'
+        
+class Update(models.Model): #associated with account, account views all they have funded + able to see updates specifically for those ones in a special view
+    project = models.ForeignKey('Project', null=True, blank=True, on_delete=models.SET_NULL)
+
+    header = models.CharField(max_length=30)
+    body = models.TextField(null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_on']
+
+    #def __new__(self):
+        #project.commission.user.sendemail()
+        #send email
+
+    def __str__(self):
+        return f'{self.project} update {self.created_on}'

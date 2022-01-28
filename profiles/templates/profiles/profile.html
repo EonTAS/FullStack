@@ -14,19 +14,18 @@
     <div class="row">
         <div class="project-container col-10 offset-1">
             <div class="row">
-                {% if projects|length == 0 %}
-                    You haven't funded any projects yet, head over to {} or suggest a project at {} 
-                {%endif%}
-                {% for project in projects %}
+                {% for commission in funded %}
+                    {%with commission.commItem as project %}
                     <div class="col-sm-6 col-md-6 col-lg-3">
-                        <div class="card h-100 border-0">
+                        <div class="row">
+                        <div class="card h-100 border-0 ">
                             <a href="{% url 'project_details' project.id %}">
                                 <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
-                            <div class="card-body pb-0">
+                            <div class="card-body pb-0 h-auto">
                                 <p class="mb-0">{{ project.name }}</p>
                             </div>
-                            <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                            <div class="card-footer bg-white pt-0 border-0 text-left">
                                 <div class="row">
                                     <div class="col">
                                         {% if project.category %} 
@@ -43,6 +42,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                View Project Updates ({{project.update_set.all|length}})
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row collapse " id="collapseExample">
+                        <div class="col">
+                        {% for update in project.update_set.all %}
+                            <div class="card border-0">
+                                <div class="card-body border-0">
+                                    <p class="mb-0 font-weight-bold">{{update.header}}</p>
+                                </div>
+                                <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>{{update.created_on}}</p>
+                                            <p>{{update.body}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {%endfor%}
                         </div>
                     </div>
 
@@ -62,7 +83,7 @@
                         <hr>
                     </div>
                     {%endif%}
-
+                    {%endwith%}
                     
                 {% endfor %}
             </div>

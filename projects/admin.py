@@ -19,3 +19,4 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Project)#, ProjectAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Comment)
+admin.site.register(Update)
