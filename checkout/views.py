@@ -78,5 +78,6 @@ def checkout_success(request, order_number):
 
     context = {
         'order': order,
+        'project': order.commItem
     }
     return render(request, "checkout/checkout_success.html", context)
