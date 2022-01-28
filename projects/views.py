@@ -124,10 +124,6 @@ def project_request(request):
 
     return render(request, "projects/project_request.html", context)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8c83e1ed4a0c53d929d5944bc55759a5a92db165
 def projects_funded(request):
     if not request.user.is_authenticated:
         return redirect("home")
