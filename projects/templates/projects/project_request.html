@@ -15,7 +15,7 @@
                         </h5>
                         {% load crispy_forms_tags %}
                         <div class="card-body pb-3">
-                            <form method="post" style="margin-top: 1.3em;" >
+                            <form method="post" style="margin-top: 1.3em;" enctype="multipart/form-data">
                                 {{ project_form | crispy }}
                                 <!-- calculate a price based on category + timescale-->
 
