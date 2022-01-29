@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Category, Comment
+from .models import Project, Category, Comment, Update
 # Register your models here.
 
 

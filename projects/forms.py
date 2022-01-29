@@ -1,6 +1,5 @@
 from .models import Comment, Project
 from django import forms
-from django.utils.translation import ugettext_lazy
 from datetime import datetime
 from datetime import timedelta
 
