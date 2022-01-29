@@ -26,3 +26,6 @@ add postgres resource addon
 pip install dj_database_url and psycopg2-binary 
 import dj_database_url into settings.py and replace teh DATABASES object with url from heroku
 superuser = u="admin" p="admin" e="exampleemail@email.com"
+import gunicorn
+setup procfile
+disable heroku collectstatic

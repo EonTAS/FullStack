@@ -1,0 +1,1 @@
+web: gunicorn eon_customs.wsgi:application
