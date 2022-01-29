@@ -35,3 +35,8 @@ heroku git:remote -a ci-eoncustoms
 git push heroku main, master doesnt work for me for some reason
 
 add all the environ things
+
+amazon webservices setup
+    why i have to enter card details ahhh
+
+install boto3 django-storages
