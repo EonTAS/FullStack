@@ -29,3 +29,9 @@ superuser = u="admin" p="admin" e="exampleemail@email.com"
 import gunicorn
 setup procfile
 disable heroku collectstatic
+
+push to heroku with
+heroku git:remote -a ci-eoncustoms
+git push heroku main, master doesnt work for me for some reason
+
+add all the environ things
