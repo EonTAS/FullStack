@@ -18,3 +18,11 @@ https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+Q1_2020/
 https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+Q1_2020/courseware/4201818c00aa4ba3a0dae243725f6e32/71413627006c4cac9b18a1de1e12a4ff/
 pip3 install -r requirements.txt
 python3 manage.py runserver
+
+# Deployment
+
+create heroku
+add postgres resource addon
+pip install dj_database_url and psycopg2-binary 
+import dj_database_url into settings.py and replace teh DATABASES object with url from heroku
+superuser = u="admin" p="admin" e="exampleemail@email.com"

@@ -9,8 +9,16 @@ class CommentForm(forms.ModelForm):
         fields = ('header', 'body')
         labels = {
             'header': "Title",
-            'body': "Comment",
-            'duration': "duration"
+            'body': "Comment"
+        }
+        
+class UpdateForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('header', 'body')
+        labels = {
+            'header': "Title",
+            'body': "Comment"
         }
         
 
