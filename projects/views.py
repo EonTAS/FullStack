@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Project, Category, Comment
-from .forms import CommentForm, ProjectForm
+from .forms import CommentForm, ProjectSuggestForm, ProjectForm
 
 from django.contrib.admin.views.decorators import staff_member_required
 
@@ -110,7 +110,7 @@ def project_request(request):
         "longterm Miscellaneous": 25,
     }
     if request.method == 'POST':
-        project_form = ProjectForm(request.POST, request.FILES)
+        project_form = ProjectSuggestForm(request.POST, request.FILES)
         if project_form.is_valid():
             # Create Comment object but don't save to database yet
             project = project_form.save(costDistribution=costDistribution, suggester=request.user)
@@ -121,7 +121,7 @@ def project_request(request):
             else:
                 return redirect(resolve_url('project_details', id=project.id))
     else:
-        project_form = ProjectForm()
+        project_form = ProjectSuggestForm()
     
     context = {
         "project_form": project_form,
@@ -132,17 +132,16 @@ def project_request(request):
 
 @staff_member_required
 def add_project(request):
-    #if request.method == 'POST':
-    #    form = ProductForm(request.POST, request.FILES)
-    #    if form.is_valid():
-    #        product = form.save()
-    #        messages.success(request, 'Successfully added product!')
-    #        return redirect(reverse('product_detail', args=[product.id]))
-    #    else:
-    #        messages.error(request, 'Failed to add product. Please ensure the form is valid.')
-    #else:
-    #    form = ProductForm()
-    form = None
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save()
+            messages.success(request, 'Successfully added item!')
+            return redirect(reverse('project_detail', args=[item.id]))
+        else:
+            messages.error(request, 'Failed to add item. Please ensure the form is valid.')
+    else:
+       form = ProjectForm()
     template = 'projects/add_project.html'
     context = {
         'form': form,
@@ -152,24 +151,24 @@ def add_project(request):
 
 @staff_member_required
 def edit_project(request, id):
-    project = get_object_or_404(Project, pk=product_id)
-    form = None
-    #if request.method == 'POST':
-    #    form = ProductForm(request.POST, request.FILES, instance=product)
-    #    if form.is_valid():
-    #        form.save()
-    #        messages.success(request, 'Successfully updated product!')
-    #        return redirect(reverse('product_detail', args=[product.id]))
-    #    else:
-    #        messages.error(request, 'Failed to update product. Please ensure the form is valid.')
-    #else:
-    #    form = ProductForm(instance=product)
-    #    messages.info(request, f'You are editing {product.name}')
+    project = get_object_or_404(Project, pk=id)
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES, instance=project)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully updated product!')
+            return redirect(reverse('project_details', args=[project.id]))
+        else:
+            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+    else:
+        form = ProjectForm(instance=project)
+        messages.info(request, f'You are editing {project.name}')
 #
     template = 'projects/edit_project.html'
     context = {
         'form': form,
-        'product': product,
+        'project': project,
     }
 
     return render(request, template, context)

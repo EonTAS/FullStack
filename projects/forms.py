@@ -22,7 +22,7 @@ class UpdateForm(forms.ModelForm):
         }
         
 
-class ProjectForm(forms.ModelForm):
+class ProjectSuggestForm(forms.ModelForm):
     scale = forms.ChoiceField(label="Project Scale", choices=((None, 'Select Timescale'), ("shortterm", '1 week'), ("mediumterm", '1 month'), ("longterm", '3 months')))
 
     priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price to fund")
@@ -57,3 +57,15 @@ class ProjectForm(forms.ModelForm):
         }
     
     field_order = ['name', 'category', 'scale', 'priceEstimate', 'description', 'image']
+class DateInput(forms.DateInput):
+    input_type = 'date'
+class ProjectForm(forms.ModelForm):
+
+    class Meta:
+        model = Project
+        exclude = []
+        widgets = {
+            'startDate': DateInput(),
+            'endDate': DateInput(),
+        }
+    

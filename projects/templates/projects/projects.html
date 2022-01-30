@@ -12,7 +12,12 @@
                 <a class="text-muted" href="{%url 'projects'%}?category={{category.name}}">
                     {{category.friendly_name}}
                 </a>
+                {% if not forloop.last %}|{% endif %}
             {% endfor %}
+            {% if request.user.is_superuser %}
+                <p><a href="{% url 'add_project' %}" class="">Add Item</a></p>
+                
+            {% endif %}
             <hr class="w-50 mb-1">
         </div>
     </div>
@@ -31,7 +36,6 @@
                         {{projects|length}} Projects {%if search%} found for <strong>"{{search}}"</strong> {%endif%}
                     </p>
                 </div>
-
             </div>
             <div class="row">
                 {% for project in projects %}
@@ -67,6 +71,13 @@
                                                 <a class="btn btn-info float-center" href="#" role="button">Please log in if you want to fund this item!</a>
                                             </div>
                                         {%endif%}
+                                        {% if request.user.is_superuser %}
+                                            <br>
+                                            <small class="ml-3">
+                                                <a href="{% url 'edit_project' project.id %}">Edit</a> | 
+                                                <a class="text-danger" href="{% url 'delete_project' project.id %}">Delete</a>
+                                            </small>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
