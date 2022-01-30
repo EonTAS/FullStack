@@ -12,12 +12,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col text-center mt-3">
-            <p>username : {{user.username}}</p>
-            <p>first name : {{user.first_name}}</p>
-            <p>last name : {{user.last_name}}</p>
-            <p>email : {{user.email}}</p>
-            <p>recieve email updates : {{user.userprofile.email_updates}}</p>
+        <div class="col-10 offset-1 mt-3">
+            <form method="POST" action="{% url 'profile' %}" class="form mb-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form | crispy }}
+                <div class="text-center">
+                    <button class="btn btn-black rounded-0" type="submit">Submit edit!</button>
+                </div>
+            </form>
+            
         </div>
     </div>
     <div class="row">
@@ -32,36 +36,50 @@
                 {% for commission in funded %}
                     {%with commission.commItem as project %}
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="row">
                         <div class="card h-100 border-0 ">
+                            {%if project%}                      
                             <a href="{% url 'project_details' project.id %}">
                                 <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
+                            {%else%}
+                                <p>
+                                    <img class="card-img-top img-fluid" src="{{ MEDIA_URL}}noimage.png" alt="unknown project">
+                                </p>
+                            {%endif%}
                             <div class="card-body pb-0 h-auto">
-                                <p class="mb-0">{{ project.name }}</p>
+                                <p class="mb-0">{%if project%}{{ project.name }}{%else%}Project deleted{%endif%}</p>
                                 <p>order : {{commission.order_number}}</p>
                             </div>
                             <div class="card-footer bg-white pt-0 border-0 text-left">
                                 <div class="row">
                                     <div class="col">
-                                        {% if project.category %} 
-                                        <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
-                                            {{project.category.friendly_name}}
-                                        </a>
-                                        {% endif %}
+                                        {%if project%}
+                                            {% if project.category %} 
+                                            <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
+                                                {{project.category.friendly_name}}
+                                            </a>
+                                            {% endif %}
 
-                                        <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
-                                        {% if project.price %}
-                                        <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
-                                        {% endif %}
+                                            <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
+                                            
+                                        {%else%}
+                                        <p>
+                                            <i>Sorry the project you funded has been deleted</i>
+                                        </p>
+                                        {%endif%}
+                                        
+                                        <p class="lead mb-0 text-left">Cost : £{{commission.order_price}}</p>
+                                        
                                     
                                         Thank you for funding this project!
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                View Project Updates ({{project.update_set.all|length}})
-                            </button>
+                            {%if project%}
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    View Project Updates ({{project.update_set.all|length}})
+                                </button>
+                            {%endif%}
                         </div>
                     </div>
                     <div class="row collapse " id="collapseExample">
