@@ -179,3 +179,10 @@ def delete_project(request, id):
     item.delete()
     messages.success(request, 'Item deleted!')
     return redirect(reverse('projects'))
+    
+@staff_member_required
+def delete_comment(request, projectId, commentId):
+    project = get_object_or_404(Project, pk=projectId)
+    project.comment_set.get(pk=commentId).delete()
+    messages.success(request, 'Comment deleted!')
+    return redirect(resolve_url("project_details", id=projectId))

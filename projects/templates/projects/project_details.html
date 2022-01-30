@@ -78,6 +78,11 @@
                             <div class="card-footer pt-0 bnorder-0 text-left">
                                 <i>made on {{comment.created_on}}</i>
                             </div>
+                            {% if request.user.is_superuser %}
+                                <small class="ml-3">
+                                    <a href="{% url 'delete_comment' project.id comment.id %}">Delete</a>
+                                </small>
+                            {% endif %}
                         </div>
                         <hr>
                     {%endfor%}
