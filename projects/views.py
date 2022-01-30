@@ -5,6 +5,9 @@ from django.db.models.functions import Lower
 from .models import Project, Category, Comment
 from .forms import CommentForm, ProjectForm
 
+from django.contrib.admin.views.decorators import staff_member_required
+
+
 # Create your views here.
 def all_projects(request):
     projects = Project.objects.all()
@@ -89,6 +92,11 @@ def project_details(request, id):
 
 
 def project_request(request):
+        
+    if not request.user.is_authenticated:                
+        messages.error(request, "please login before suggesting a project")
+        return redirect(reverse('account_login'))
+
     project_form = None
     costDistribution = {
         "shortterm Codes and Mods": 20,
@@ -112,8 +120,6 @@ def project_request(request):
                 return redirect(resolve_url('checkout',id=project.id))
             else:
                 return redirect(resolve_url('project_details', id=project.id))
-
-
     else:
         project_form = ProjectForm()
     
@@ -123,3 +129,54 @@ def project_request(request):
     }
 
     return render(request, "projects/project_request.html", context)
+
+@staff_member_required
+def add_project(request):
+    #if request.method == 'POST':
+    #    form = ProductForm(request.POST, request.FILES)
+    #    if form.is_valid():
+    #        product = form.save()
+    #        messages.success(request, 'Successfully added product!')
+    #        return redirect(reverse('product_detail', args=[product.id]))
+    #    else:
+    #        messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+    #else:
+    #    form = ProductForm()
+    form = None
+    template = 'projects/add_project.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
+
+@staff_member_required
+def edit_project(request, id):
+    project = get_object_or_404(Project, pk=product_id)
+    form = None
+    #if request.method == 'POST':
+    #    form = ProductForm(request.POST, request.FILES, instance=product)
+    #    if form.is_valid():
+    #        form.save()
+    #        messages.success(request, 'Successfully updated product!')
+    #        return redirect(reverse('product_detail', args=[product.id]))
+    #    else:
+    #        messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+    #else:
+    #    form = ProductForm(instance=product)
+    #    messages.info(request, f'You are editing {product.name}')
+#
+    template = 'projects/edit_project.html'
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, template, context)
+
+@staff_member_required
+def delete_project(request, id):
+    item = get_object_or_404(Project, pk=id)
+    item.delete()
+    messages.success(request, 'Item deleted!')
+    return redirect(reverse('projects'))

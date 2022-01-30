@@ -24,7 +24,7 @@ class Commission(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     order_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
-    commItem = models.OneToOneField(Project, null=False, blank=False, on_delete=models.DO_NOTHING)
+    commItem = models.OneToOneField(Project, null=True, blank=False, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, on_delete=models.SET_NULL)
 
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')

@@ -36,7 +36,7 @@ def checkout(request, id):
     
     if not request.user.is_authenticated:                
         messages.error(request, "please login before trying to fund a project")
-        return redirect(reverse('home'))
+        return redirect(reverse('log_in'))
 
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
