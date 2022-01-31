@@ -53,6 +53,8 @@ def all_projects(request):
         {"name": "name_desc", "friendlyName": "Name (Z-A)"},
         {"name": "category_asc", "friendlyName": "Category (A-Z)"},
         {"name": "category_desc", "friendlyName": "Category (Z-A)"},
+        {"name": "commission_asc", "friendlyName": "Not funded first"},
+        {"name": "commission_desc", "friendlyName": "funded first"},
     ]
 
     context = {

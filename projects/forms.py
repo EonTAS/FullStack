@@ -28,7 +28,7 @@ class ProjectSuggestForm(forms.ModelForm):
     priceEstimate = forms.Field(required=False,disabled=True,label="Estimated Price to fund")
 
     def save(self, costDistribution, suggester, commit=True):
-        instance = super(ProjectForm, self).save(commit=False)
+        instance = super(ProjectSuggestForm, self).save(commit=False)
         instance.startDate = datetime.now()
         scale = self.cleaned_data["scale"]
         if (scale == "shortterm"):
