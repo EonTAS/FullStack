@@ -1,6 +1,12 @@
 from django.db import models
 from django.conf import settings
 
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from django.core.mail import send_mail
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=254)
@@ -26,8 +32,7 @@ class Project(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="media/submitted")
 
     suggester = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
-#    payed_for = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.name
 
@@ -54,9 +59,40 @@ class Update(models.Model): #associated with account, account views all they hav
     class Meta:
         ordering = ['created_on']
 
-    #def __new__(self):
-        #project.commission.user.sendemail()
-        #send email
-
     def __str__(self):
         return f'{self.project} update {self.created_on}'
+
+
+@receiver(post_save, sender=Update)
+def sendUpdate(sender, instance, created, **kwargs):
+    if created:
+        suggester = instance.project.suggester 
+        funder = None
+        if instance.project.commission:
+            funder = instance.project.commission.user
+        
+        if suggester == funder:
+            send_mail(
+                f'Hi {suggester} : New update for suggested and funded project {instance.project} - {instance.header}',
+                instance.body,
+                settings.DEFAULT_FROM_EMAIL,
+                [{suggester.email}],
+                fail_silently=False,
+            )
+        else:
+            send_mail(
+                f'Hi {suggester} : New update for suggested idea {instance.project} - {instance.header}',
+                instance.body,
+                settings.DEFAULT_FROM_EMAIL,
+                [{suggester.email}],
+                fail_silently=False,
+            )
+            if funder:
+                send_mail(
+                    f'Hi {funder} : New update for funded project {instance.project} - {instance.header}',
+                    instance.body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [{funder}],
+                    fail_silently=False,
+                )
+    
