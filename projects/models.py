@@ -18,8 +18,10 @@ class Project(models.Model):
     
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
-    startDate = models.DateField()
-    endDate = models.DateField(null=True, blank=True)
+    expectedLength = models.DurationField()
+    startDate = models.DateField(null=True, blank=True)
+
+    approved = models.BooleanField(default=False)
 
     image = models.ImageField(null=True, blank=True, upload_to="media/submitted")
 

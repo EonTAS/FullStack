@@ -6,7 +6,8 @@ from .models import Project, Category, Comment
 from .forms import CommentForm, ProjectSuggestForm, ProjectForm
 
 from django.contrib.admin.views.decorators import staff_member_required
-
+from django.db.models import DateField, ExpressionWrapper, F
+from datetime import timedelta
 
 # Create your views here.
 def all_projects(request):
@@ -14,7 +15,13 @@ def all_projects(request):
     query = None
     categories = None
     sort = None
-    direction = None 
+    direction = None
+
+    if not request.user.is_superuser:
+        projects = projects.filter(approved=True)
+    projects = projects.annotate(endDate=ExpressionWrapper(
+        F('startDate') + F('expectedLength'), output_field=DateField()))
+
     if request.GET:
         if 'category' in request.GET:
             categories = request.GET["category"].split(",")
@@ -56,6 +63,11 @@ def all_projects(request):
         {"name": "commission_asc", "friendlyName": "Not funded first"},
         {"name": "commission_desc", "friendlyName": "funded first"},
     ]
+    if request.user.is_superuser:
+        possibleSortings += [
+            {"name": "approved_asc", "friendlyName": "Unapproved first"},
+            {"name": "approved_desc", "friendlyName": "Approved first"},
+        ]
 
     context = {
         'projects': projects,
@@ -88,8 +100,10 @@ def project_details(request, id):
     context = {
         'project': project,
         'comments': comments,
-        "comment_form": comment_form
+        "comment_form": comment_form,
     }
+    if project.startDate:
+        context["projectEndDate"] = project.startDate + project.expectedLength
     return render(request, "projects/project_details.html", context)
 
 
@@ -118,10 +132,8 @@ def project_request(request):
             project = project_form.save(costDistribution=costDistribution, suggester=request.user)
             # Assign the current post to the comment
             # Save the comment to the database
-            if request.POST["action"] == "fund":
-                return redirect(resolve_url('checkout',id=project.id))
-            else:
-                return redirect(resolve_url('project_details', id=project.id))
+            
+            return redirect(resolve_url('project_details', id=project.id))
     else:
         project_form = ProjectSuggestForm()
     
