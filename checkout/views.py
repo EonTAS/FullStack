@@ -34,6 +34,10 @@ def checkout(request, id):
         messages.error(request, "item already funded")
         return redirect(reverse('home'))
     
+    if project.approved == False:
+        messages.error(request, 'item not yet approved')
+        return redirect(reverse('home'))
+        
     if not request.user.is_authenticated:                
         messages.error(request, "please login before trying to fund a project")
         return redirect(reverse('log_in'))

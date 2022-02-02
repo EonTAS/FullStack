@@ -16,6 +16,9 @@
 
         <div class="row">
             <div class="col-12">
+                <p>
+                    If approving a project, please make sure length is appropriate for the task and please dont supply a startdate
+                </p>
                 <form method="POST" action="{% url 'edit_project' project.id %}" class="form mb-2" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% load crispy_forms_tags %}
