@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Project, Category, Comment
-from .forms import CommentForm, ProjectSuggestForm, ProjectForm
+from .forms import CommentForm, ProjectSuggestForm, ProjectForm, UpdateForm
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import DateField, ExpressionWrapper, F
@@ -81,26 +81,38 @@ def all_projects(request):
 def project_details(request, id):
     project = get_object_or_404(Project, pk=id)
     comments = project.comment_set.all()
-
-
+    update_form = None
     if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
+        if "commentForm" in request.POST:
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
 
-            # Create Comment object but don't save to database yet
-            new_comment = comment_form.save(commit=False)
-            # Assign the current post to the comment
-            new_comment.item = project
-            new_comment.owner = request.user
-            # Save the comment to the database
-            new_comment.save()
-    else:
-        comment_form = CommentForm()
+                # Create Comment object but don't save to database yet
+                new_comment = comment_form.save(commit=False)
+                # Assign the current post to the comment
+                new_comment.item = project
+                new_comment.owner = request.user
+                # Save the comment to the database
+                new_comment.save()
+        elif "updateForm" in request.POST and request.user.is_superuser:
+            update_form = UpdateForm(data=request.POST)
+            if update_form.is_valid():
+
+                # Create Comment object but don't save to database yet
+                update = update_form.save(commit=False)
+                update.project = project
+                # Save the comment to the database
+                update.save()
+    if request.user.is_superuser:
+        update_form = UpdateForm()
+    
+    comment_form = CommentForm()
 
     context = {
         'project': project,
         'comments': comments,
         "comment_form": comment_form,
+        "update_form": update_form
     }
     if project.startDate:
         context["projectEndDate"] = project.startDate + project.expectedLength
@@ -178,7 +190,6 @@ def edit_project(request, id):
     else:
         form = ProjectForm(instance=project)
         messages.info(request, f'You are editing {project.name}')
-#
     template = 'projects/edit_project.html'
     context = {
         'form': form,

@@ -15,7 +15,9 @@
                 {% if not forloop.last %}|{% endif %}
             {% endfor %}
             {% if request.user.is_superuser %}
-                <p><a href="{% url 'add_project' %}" class="">Add Item</a></p>
+                <div class="text-center">
+                    <a class="btn btn-info float-center" href="{% url 'add_project' %}" role="button">Add item</a>
+                </div>
                 
             {% endif %}
             <hr class="w-50 mb-1">

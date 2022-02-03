@@ -66,7 +66,8 @@ class Update(models.Model): #associated with account, account views all they hav
 @receiver(post_save, sender=Update)
 def sendUpdate(sender, instance, created, **kwargs):
     if created:
-        suggester = instance.project.suggester 
+        print(instance)
+        suggester = instance.project.suggester
         funder = None
         if instance.project.commission:
             funder = instance.project.commission.user

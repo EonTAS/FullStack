@@ -27,7 +27,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 {% if request.user.is_superuser %}col-lg-4{%else%}col-lg-8{%endif%}">
                     <div class="project-details-container mb-5 mt-md-5">
                         {% if not project.approved and request.user.is_superuser %}
                             <div class="text-center">
@@ -49,6 +49,11 @@
                                 </a>
                             </p>
                         {% endif %}
+                        {%if request.user == project.suggester or request.user == project.commission.user %}
+                            <button type="button" class="btn btn-secondary btn" data-toggle="modal" data-target="#modalProject">
+                                View Project Updates ({{project.update_set.all|length}})
+                            </button>
+                        {%endif%}
                         {% if request.user.is_superuser %}
                             <small class="ml-3">
                                 <a href="{% url 'edit_project' project.id %}">Edit</a> | 
@@ -74,6 +79,30 @@
                         {%endif%}
                     </div>
                 </div>
+                {% if request.user.is_superuser %}
+                <div class="col-12 col-lg-4">
+                    <div class="text-center mt-3">
+                        <h2 class="logo-font">Update</h2>
+                        <p>
+                            Send an update that notifys the original project suggester {%if project.commission%} and funder {%endif%} on the state of the process
+                        </p>
+                    </div>
+                    <div class="mb-5">
+                        {% load crispy_forms_tags %}
+                            <div class="card-body pb-0">
+                                <form method="post" style="margin-top: 1.3em;">
+                                    {{ update_form | crispy }}
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-lg" name="updateForm">Submit</button>
+                                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#modalProject">
+                                        View Previous Project Updates ({{project.update_set.all|length}})
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                {%endif%}
             </div>
             <hr>
             <div class="row">
@@ -107,7 +136,7 @@
                                 <form method="post" style="margin-top: 1.3em;">
                                     {{ comment_form | crispy }}
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                                    <button type="submit" class="btn btn-primary  btn-lg" name="commentForm">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -120,4 +149,45 @@
     </div>
 
 </div>
+
+{% if request.user.is_superuser or request.user == project.suggester or request.user == project.commission.user %}
+<div class="modal fade" id="modalProject" tabindex="-1" role="dialog"
+aria-labelledby="modalProjectLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalProjectLabel">Updates for <strong>{{project}}</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {%if project.update_set.all|length == 0%} 
+                No Updates For this project yet! stay tuned
+                {%else%}
+                {% for update in project.update_set.all %}
+                <div class="card border-0">
+                    <div class="card-body border-0">
+                        <p class="mb-0 font-weight-bold">{{update.header}}</p>
+                    </div>
+                    <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                        <div class="row">
+                            <div class="col">
+                                <p>{{update.created_on}}</p>
+                                <p>{{update.body}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{%endif%}
 {% endblock %}

@@ -1,4 +1,4 @@
-from .models import Comment, Project
+from .models import Comment, Project, Update
 from django import forms
 from datetime import datetime
 from datetime import timedelta
@@ -14,7 +14,7 @@ class CommentForm(forms.ModelForm):
         
 class UpdateForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = Update
         fields = ('header', 'body')
         labels = {
             'header': "Title",
