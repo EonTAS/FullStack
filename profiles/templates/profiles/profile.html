@@ -94,7 +94,7 @@
                                             {%if project.update_set.all|length == 0%} 
                                             No Updates For this project yet! stay tuned
                                             {%else%}
-                                            {% for update in project.update_set.all %}
+                                            {% for update in project.update_set.all reversed %}
                                             <div class="card border-0">
                                                 <div class="card-body border-0">
                                                     <p class="mb-0 font-weight-bold">{{update.header}}</p>
@@ -103,7 +103,7 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <p>{{update.created_on}}</p>
-                                                            <p>{{update.body}}</p>
+                                                            <p style="white-space: pre-wrap">{{update.body}}</p>
                                                         </div>
                                                     </div>
                                                 </div>

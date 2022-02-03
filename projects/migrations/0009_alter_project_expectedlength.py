@@ -10,7 +10,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
+            model_name='project',
+            name='expectedLength',
+        ),
+        migrations.AddField(
             model_name='project',
             name='expectedLength',
             field=models.DurationField(),

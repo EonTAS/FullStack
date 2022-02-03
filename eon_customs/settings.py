@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'checkout',
     'profiles', 
-    'storages'
+    'storages',
+    "timedeltatemplatefilter",
 ]
 
 MIDDLEWARE = [
@@ -104,6 +105,9 @@ ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
+#DATABASES = {
+#    'default': dj_database_url.parse("postgres://lksyyispqihqzl:cf1feea55aa94d031148d722899891db61fd85450aec322a7a0758db745232c0@ec2-54-235-98-1.compute-1.amazonaws.com:5432/dbroi31e8qp0v9")
+#}
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 if 'DATABASE_URL' in os.environ:

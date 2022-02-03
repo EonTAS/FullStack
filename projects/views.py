@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404, resol
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
-from .models import Project, Category, Comment
+from .models import Project, Category, Comment, Update
 from .forms import CommentForm, ProjectSuggestForm, ProjectForm, UpdateForm
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import DateField, ExpressionWrapper, F
 from datetime import timedelta
+
+from copy import copy
 
 # Create your views here.
 def all_projects(request):
@@ -21,6 +23,7 @@ def all_projects(request):
         projects = projects.filter(approved=True)
     projects = projects.annotate(endDate=ExpressionWrapper(
         F('startDate') + F('expectedLength'), output_field=DateField()))
+    
 
     if request.GET:
         if 'category' in request.GET:
@@ -97,7 +100,6 @@ def project_details(request, id):
         elif "updateForm" in request.POST and request.user.is_superuser:
             update_form = UpdateForm(data=request.POST)
             if update_form.is_valid():
-
                 # Create Comment object but don't save to database yet
                 update = update_form.save(commit=False)
                 update.project = project
@@ -116,6 +118,7 @@ def project_details(request, id):
     }
     if project.startDate:
         context["projectEndDate"] = project.startDate + project.expectedLength
+
     return render(request, "projects/project_details.html", context)
 
 
@@ -142,8 +145,6 @@ def project_request(request):
         if project_form.is_valid():
             # Create Comment object but don't save to database yet
             project = project_form.save(costDistribution=costDistribution, suggester=request.user)
-            # Assign the current post to the comment
-            # Save the comment to the database
             
             return redirect(resolve_url('project_details', id=project.id))
     else:
@@ -180,9 +181,36 @@ def edit_project(request, id):
     project = get_object_or_404(Project, pk=id)
 
     if request.method == 'POST':
+        prevState = copy(project)
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
+
+            body = "Your project has been approved and can now be funded at $asdf\nAdditional changes found below:\n"
+
+            newState = project
+            changesString = ""
+            for key in Project._meta.fields:
+                name = key.name
+                if name != "approved":
+                    if getattr(newState, name) != getattr(prevState, name):
+                        changesString += f'  {key.verbose_name.capitalize()} changed from "{getattr(prevState, name)}" to "{getattr(newState, name)}"\n'
+            body = ""
+            header = "Project Changed"
+            if prevState.approved != project.approved:
+                if project.approved == True:
+                    body = "Project has been approved and can now be funded at $asdf\n"
+                    header = "Project Approved!"
+                else:
+                    body = "Your project has been unapproved and can no longer be funded until reapproved\n"
+            else:
+                body = "Your project has changed\n"
+            if changesString != "":
+                body += "Changes to project can be found below:\n"
+                body += changesString
+            a = Update(project=project, header=header, body=body)
+            a.save()
+
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('project_details', args=[project.id]))
         else:
