@@ -10,3 +10,7 @@ cloudinary_python.txt
 
 
 *.sqlite3
+
+media/*
+Notes.md 
+README copy.md
