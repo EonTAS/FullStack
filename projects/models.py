@@ -9,7 +9,8 @@ from django.core.mail import send_mail
 
 from django.core.exceptions import ObjectDoesNotExist
 
-# Create your models here.
+# each project can be any of these categories
+
 
 class Category(models.Model):
     name = models.CharField(max_length=254)
@@ -21,6 +22,8 @@ class Category(models.Model):
     def __str__(self):
         return self.friendly_name
 
+# each project in the site
+
 
 class Project(models.Model):
     category = models.ForeignKey('Category', on_delete=models.PROTECT)
@@ -28,8 +31,8 @@ class Project(models.Model):
     name = models.CharField(max_length=254)
     description = models.TextField()
 
+    # price listing for the project
     price = models.DecimalField(max_digits=6, decimal_places=2)
-
     expectedLength = models.DurationField(
         verbose_name="Expected Development Time")
     startDate = models.DateField(
@@ -46,6 +49,8 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+# superclass to Comments and Updates, a notification for a project
+
 
 class Message(models.Model):
     item = models.ForeignKey('Project', null=True,
@@ -58,6 +63,7 @@ class Message(models.Model):
         ordering = ['created_on']
         abstract = True
 
+
 class Comment(Message):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               null=True, blank=True, on_delete=models.SET_NULL)
@@ -68,41 +74,47 @@ class Comment(Message):
 
 class Update(Message):  # associated with account, account views all they have funded + able to see updates specifically for those ones in a special view
     def __str__(self):
-        return f'{self.project} update {self.created_on}'
+        return f'{self.item} update {self.created_on}'
+
+    # function to send the email to the user if they have it enabled
+    def sendEmail(self):
+        suggester = self.item.suggester
+        # if the item doesnt have a related commission, funder doesnt exist so set to None
+        try:
+            funder = self.item.commission.user
+        except ObjectDoesNotExist as e:
+            funder = None
+        body = self.body + \
+            "\n\nIf you have any issue, please respond to this email and we will get back to you (not really this is a fake email)"
+        if suggester == funder:  # if suggester and funder are the same person, dont send two emails, just the one that makes sense
+            if suggester.userprofile.email_updates:
+                send_mail(
+                    f'Hi {suggester} : New update for suggested and funded project {self.item} - {self.header}',
+                    body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [{suggester.email}],
+                    fail_silently=False,
+                )
+        else:  # else check each setting individually and send seperate emails
+            if suggester.userprofile.email_updates:
+                send_mail(
+                    f'Hi {suggester} : New update for suggested idea {self.item} - {self.header}',
+                    body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [{suggester.email}],
+                    fail_silently=False,
+                )
+            if funder and funder.userprofile.email_updates:  # only send to funder if they exist
+                send_mail(
+                    f'Hi {funder} : New update for funded project {self.item} - {self.header}',
+                    body,
+                    self.DEFAULT_FROM_EMAIL,
+                    [{funder.email}],
+                    fail_silently=False,
+                )
 
 
 @receiver(post_save, sender=Update)
 def sendUpdate(sender, instance, created, **kwargs):
     if created:
-        suggester = instance.project.suggester
-        try:
-            funder = instance.project.commission.user
-        except ObjectDoesNotExist as e:
-            funder = None
-
-        if suggester == funder:
-            if suggester.userprofile.email_updates:
-                send_mail(
-                    f'Hi {suggester} : New update for suggested and funded project {instance.project} - {instance.header}',
-                    instance.body,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [{suggester.email}],
-                    fail_silently=False,
-                )
-        else:
-            if suggester.userprofile.email_updates:
-                send_mail(
-                    f'Hi {suggester} : New update for suggested idea {instance.project} - {instance.header}',
-                    instance.body + "\n\nIf you have any issue, please respond to this email and we will get back to you (not really this is a fake email)",
-                    settings.DEFAULT_FROM_EMAIL,
-                    [{suggester.email}],
-                    fail_silently=False,
-                )
-            if funder and funder.userprofile.email_updates:
-                send_mail(
-                    f'Hi {funder} : New update for funded project {instance.project} - {instance.header}',
-                    instance.body,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [{funder}],
-                    fail_silently=False,
-                )
+        instance.sendEmail()
