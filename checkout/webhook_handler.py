@@ -11,6 +11,7 @@ class StripeWebhook_Handler:
         return HttpResponse(content=f'Unhandled Webhook received: {event["type"]}', status=200) 
 
     def handle_payment_intent_succeeded(self, event):
+        #if payment successful then add to database if the payment not already in the database
         intent = event.data.object
         pid = intent.id
         user = User.objects.get(id=intent.metadata.user)
@@ -25,6 +26,7 @@ class StripeWebhook_Handler:
         
         comm_exists = False 
         attempt = 1
+        #5 second delay repeat check when adding to avoid any duplicate problems
         while attempt <= 5:
             try:
                 commission = Commission.objects.get(
@@ -48,6 +50,7 @@ class StripeWebhook_Handler:
                 time.sleep(1)
 
         if comm_exists:
+            #respond OK to stripe but dont add anything to database
             return HttpResponse(content=f'Webhook received: {event["type"]} | Order already in database', status=200)
         else:
             commission = None
@@ -67,7 +70,7 @@ class StripeWebhook_Handler:
                     stripe_pid=pid
                 )
             except Exception as e:
-                print(e)
+                #if adding failed in any way, cancel, delete and tell stripe it failed and retry later
                 if commission:
                     commission.delete()
                 return HttpResponse(content=f'Webhook received: {event["type"]} | ERROR {e}', status=500)

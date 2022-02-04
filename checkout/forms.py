@@ -1,8 +1,6 @@
 from .models import Commission
 from django import forms
 
-
-
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Commission
@@ -31,6 +29,7 @@ class OrderForm(forms.ModelForm):
 
         self.fields['full_name'].widget.attrs['autofocus'] = True
         for field in self.fields:
+            #for each field, set the placeholder text inside it to the item specified in the array above
             if self.fields[field].required:
                 placeholder = f'{placeholders[field]} *'
             else:

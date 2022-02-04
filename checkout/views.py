@@ -6,15 +6,16 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 
-from projects.models import Project 
+from projects.models import Project
 from .models import Commission
 
 import stripe
 
+
 @require_POST
 def cache_checkout_data(request):
+    # workaround to add metadata to the payment intent since you cant do that within the javascript
     try:
-
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe.PaymentIntent.modify(pid, metadata={
@@ -24,24 +25,28 @@ def cache_checkout_data(request):
         print(stripe.PaymentIntent)
         return HttpResponse(status=200)
     except Exception as e:
-        messages.error(request, 'sorry your payment failed to go through, please try again later')
+        messages.error(
+            request, 'sorry your payment failed to go through, please try again later')
         return HttpResponse(content=e, status=400)
 
-# Create your views here.
+
 def checkout(request, id):
+    # checkout is specific to individual items, handle that here
     project = get_object_or_404(Project, pk=id)
+    # if a project has a commission already, that has been funded so shout at user
     if hasattr(project, 'commission'):
         messages.error(request, "item already funded")
         return redirect(reverse('home'))
-    
-    if project.approved == False:
+
+    if project.approved == False:  # project cant be funded if not yet approved
         messages.error(request, 'item not yet approved')
         return redirect(reverse('home'))
-        
-    if not request.user.is_authenticated:                
+
+    if not request.user.is_authenticated:  # must log in to fund item
         messages.error(request, "please login before trying to fund a project")
         return redirect(reverse('log_in'))
 
+    # stripe setup
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
     final_price = round(project.price * 100)
@@ -56,6 +61,7 @@ def checkout(request, id):
         order_form = OrderForm(data=request.POST)
         pid = request.POST.get('client_secret').split('_secret')[0]
         if order_form.is_valid():
+            # fill in order with all the other stuff the form doesnt contain
             order = order_form.save(commit=False)
             order.commItem = project
             order.user = request.user
@@ -75,7 +81,9 @@ def checkout(request, id):
     }
     return render(request, "checkout/checkout.html", context)
 
+
 def checkout_success(request, order_number):
+    # once payment is made, send to this page
     order = get_object_or_404(Commission, order_number=order_number)
     messages.success(request, f'Order successfully processed! \
         your order number is {order_number} A confirmation email will be sent to {order.email}')

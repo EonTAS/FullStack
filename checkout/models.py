@@ -26,11 +26,12 @@ class Commission(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     order_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
+    #there can only be one payment per item, so one to one field
     commItem = models.OneToOneField(Project, null=True, blank=False, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, on_delete=models.SET_NULL)
 
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
-
+    #create order uuid so its not easily guessable 
     def _generate_order_number(self):
         """
         Generate a random, unique order number using UUID
@@ -45,18 +46,20 @@ class Commission(models.Model):
         """
         if not self.order_number:
             self.order_number = self._generate_order_number()
+        #copy price over from commission item
         self.order_price = self.commItem.price
-        #self.commItem.payed_for = True 
         
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.order_number
 
+#detect when a payment is made and create an update for it
 @receiver(post_save, sender=Commission)
 def sendUpdate(sender, instance, created, **kwargs):
     if created:
         if not instance.commItem.startDate:
+            #set startdate of a now paid for item to 1 week after the payment
             instance.commItem.startDate = datetime.now() + timedelta(days=7)
             instance.commItem.save()
         header = f'Project {instance.commItem} funded for £{instance.order_price}'
