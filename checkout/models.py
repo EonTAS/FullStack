@@ -4,8 +4,11 @@ import uuid
 from django.db import models
 from django.conf import settings
 
-from projects.models import Project
+from projects.models import Project, Update
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from datetime import datetime, timedelta
 
 class Commission(models.Model):
     order_number = models.CharField(max_length=32, null=False, editable=False)
@@ -50,3 +53,13 @@ class Commission(models.Model):
     def __str__(self):
         return self.order_number
 
+@receiver(post_save, sender=Commission)
+def sendUpdate(sender, instance, created, **kwargs):
+    if created:
+        if not instance.commItem.startDate:
+            instance.commItem.startDate = datetime.now() + timedelta(days=7)
+            instance.commItem.save()
+        header = f'Project {instance.commItem} funded for £{instance.order_price}'
+        body = f"Thank you {instance.user} for funding {instance.commItem}. We will begin working on this project on {instance.commItem.startDate.strftime('%d-%m-%Y')}."
+        Update.objects.create(project=instance.commItem, header=header, body=body)
+        
