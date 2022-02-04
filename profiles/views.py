@@ -9,22 +9,28 @@ from django.db.models import DateField, ExpressionWrapper, F
 
 from .forms import UserForm
 
+#View users Profile
 @login_required
 def profile(request):
+    #if user is editting their profile, save that here
     if request.method == 'POST':
         form = UserForm(data=request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, "User updated")
+            messages.success(request, "Data updated")
     else:
         form = UserForm(instance=request.user)
 
+    #return list of all items funded by the user and all items suggested by the user to the 
+    funded = request.user.commission_set.annotate(commItem__endDate=ExpressionWrapper(
+            F('commItem__startDate') + F('commItem__expectedLength'), output_field=DateField())).all()
+    suggested = request.user.project_set.annotate(endDate=ExpressionWrapper(
+            F('startDate') + F('expectedLength'), output_field=DateField())).all()
+    
     context = {
         "user": request.user,
-        "funded": request.user.commission_set.annotate(commItem__endDate=ExpressionWrapper(
-            F('commItem__startDate') + F('commItem__expectedLength'), output_field=DateField())).all(),
-        "suggested":  request.user.project_set.annotate(endDate=ExpressionWrapper(
-            F('startDate') + F('expectedLength'), output_field=DateField())).all(),
+        "funded": funded,
+        "suggested":  suggested,
         "form": form
     }
     return render(request, "profiles/profile.html", context)

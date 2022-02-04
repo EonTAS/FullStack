@@ -11,7 +11,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 
-
 class Category(models.Model):
     name = models.CharField(max_length=254)
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
@@ -48,33 +47,26 @@ class Project(models.Model):
         return self.name
 
 
-class Comment(models.Model):
+class Message(models.Model):
     item = models.ForeignKey('Project', null=True,
                              blank=True, on_delete=models.SET_NULL)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              null=True, blank=True, on_delete=models.SET_NULL)
     header = models.CharField(max_length=30)
     body = models.TextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['created_on']
+        abstract = True
+
+class Comment(Message):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'Comment "{self.body}" by {self.owner}'
 
 
-class Update(models.Model):  # associated with account, account views all they have funded + able to see updates specifically for those ones in a special view
-    project = models.ForeignKey(
-        'Project', null=True, blank=True, on_delete=models.SET_NULL)
-
-    header = models.CharField(max_length=30)
-    body = models.TextField(null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['created_on']
-
+class Update(Message):  # associated with account, account views all they have funded + able to see updates specifically for those ones in a special view
     def __str__(self):
         return f'{self.project} update {self.created_on}'
 

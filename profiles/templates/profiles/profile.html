@@ -199,16 +199,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProject{{project.id}}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProjectSuggested{{project.id}}">
                                 View Project Updates ({{project.update_set.all|length}})
                             </button>
                             <!-- Modal -->
-                            <div class="modal fade" id="modalProject{{project.id}}" tabindex="-1" role="dialog"
-                            aria-labelledby="modalProject{{project.id}}Label" aria-hidden="true">
+                            <div class="modal fade" id="modalProjectSuggested{{project.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalProjectSuggested{{project.id}}Label" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="modalProject{{project.id}}Label">Updates for <strong>{{project}}</strong></h5>
+                                        <h5 class="modal-title" id="modalProjectSuggested{{project.id}}Label">Updates for <strong>{{project}}</strong></h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

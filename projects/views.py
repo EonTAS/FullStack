@@ -102,7 +102,7 @@ def project_details(request, id):
             if update_form.is_valid():
                 # Create Comment object but don't save to database yet
                 update = update_form.save(commit=False)
-                update.project = project
+                update.item = project
                 # Save the comment to the database
                 update.save()
     if request.user.is_superuser:
