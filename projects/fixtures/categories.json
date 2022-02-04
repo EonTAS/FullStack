@@ -4,7 +4,10 @@
     "model": "projects.category",
     "fields": {
       "name": "mods",
-      "friendly_name": "Codes and Mods"
+      "friendly_name": "Codes and Mods",
+      "examplePrice_shortterm": 10.0,
+      "examplePrice_midterm": 20.0,
+      "examplePrice_longterm": 30.0
     }
   },
   {
@@ -12,7 +15,10 @@
     "model": "projects.category",
     "fields": {
       "name": "art",
-      "friendly_name": "Art"
+      "friendly_name": "Art",
+      "examplePrice_shortterm": 15.0,
+      "examplePrice_midterm": 20.0,
+      "examplePrice_longterm": 25.0
     }
   },
   {
@@ -20,7 +26,10 @@
     "model": "projects.category",
     "fields": {
       "name": "misc",
-      "friendly_name": "Miscellaneous"
+      "friendly_name": "Miscellaneous",
+      "examplePrice_shortterm": 5.0,
+      "examplePrice_midterm": 10.0,
+      "examplePrice_longterm": 20.0
     }
   }
 ]

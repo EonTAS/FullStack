@@ -146,17 +146,12 @@ def project_request(request):
 
     project_form = None
     # suggested cost layout of category + timeframe
-    costDistribution = {
-        "shortterm Codes and Mods": 20,
-        "mediumterm Codes and Mods": 30,
-        "longterm Codes and Mods": 40,
-        "shortterm Art": 15,
-        "mediumterm Art": 25,
-        "longterm Art": 35,
-        "shortterm Miscellaneous": 10,
-        "mediumterm Miscellaneous": 20,
-        "longterm Miscellaneous": 25,
-    }
+    costDistribution = {}
+    for category in Category.objects.all():
+        costDistribution["shortterm" + str(category.id)] = float(category.examplePrice_shortterm)
+        costDistribution["mediumterm" + str(category.id)] = float(category.examplePrice_midterm)
+        costDistribution["longterm" + str(category.id)] = float(category.examplePrice_longterm)
+    
     if request.method == 'POST':
         project_form = ProjectSuggestForm(request.POST, request.FILES)
         if project_form.is_valid():

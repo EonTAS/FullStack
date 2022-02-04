@@ -38,8 +38,8 @@
 <script type = "text/javascript">
     function update() {
         var scale = $('#id_scale').val()
-        var category = $('#id_category option:selected').text()
-        price = {{costDistribution|safe}}[scale + " " + category]
+        var category = $('#id_category option:selected').val()
+        price = {{costDistribution|safe}}[scale + category]
         if (!price) {
             price = "n/a"
         }
