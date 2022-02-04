@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %} 
+{% load timedelta_filter %}
 
 
 {% block content %} 
@@ -26,11 +27,13 @@
     </div>
     <div class="row">
         <div class="col text-center mt-3">
-            <h2 class="logo-font">Projects you have funded:</h2>
+            <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#funded" aria-expanded="false" aria-controls="funded">
+                <h2 class="logo-font">Projects you have funded</h2>
+            </button>
             <hr class="w-50 mb-1">
         </div>
     </div>
-    <div class="row">
+    <div class="row collapse" id="funded">
         <div class="project-container col-10 offset-1">
             <div class="row">
                 {% for commission in funded %}
@@ -59,8 +62,13 @@
                                                 {{project.category.friendly_name}}
                                             </a>
                                             {% endif %}
-
-                                            <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
+                                            <p class="lead mb-0 text-left">
+                                            {% if project.startDate %} 
+                                                {{project.startDate}} - {{project.endDate}}
+                                            {% else %}
+                                                Project expected to take {{project.expectedLength|timedelta:"{days_total} day(s)"}}
+                                            {% endif %}
+                                            </p>
                                             
                                         {%else%}
                                         <p>
@@ -92,23 +100,23 @@
                                         </div>
                                         <div class="modal-body">
                                             {%if project.update_set.all|length == 0%} 
-                                            No Updates For this project yet! stay tuned
+                                                No Updates For this project yet! stay tuned
                                             {%else%}
-                                            {% for update in project.update_set.all reversed %}
-                                            <div class="card border-0">
-                                                <div class="card-body border-0">
-                                                    <p class="mb-0 font-weight-bold">{{update.header}}</p>
-                                                </div>
-                                                <div class="card-footer bg-white pt-0 bnorder-0 text-left">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <p>{{update.created_on}}</p>
-                                                            <p style="white-space: pre-wrap">{{update.body}}</p>
+                                                {% for update in project.update_set.all reversed %}
+                                                    <div class="card border-0">
+                                                        <div class="card-body border-0">
+                                                            <p class="mb-0 font-weight-bold">{{update.header}}</p>
+                                                        </div>
+                                                        <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <p>{{update.created_on}}</p>
+                                                                    <p style="white-space: pre-wrap">{{update.body}}</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            {%endfor%}
+                                                {%endfor%}
                                             {%endif%}
                                         </div>
                                         <div class="modal-footer">
@@ -142,6 +150,119 @@
                     </div>
                     {%endif%}
                     {%endwith%}
+                    
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center mt-3">
+            <button class="btn btn-info btn-lg" type="button" data-toggle="collapse" data-target="#suggested" aria-expanded="false" aria-controls="suggested">
+                <h2 class="logo-font">Projects you have suggested:</h2>
+            </button>
+            <hr class="w-50 mb-1">
+        </div>
+    </div>
+    <div class="row collapse" id="suggested">
+        <div class="project-container col-10 offset-1">
+            <div class="row">
+                {% for project in suggested %}
+                    <div class="col-sm-6 col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 ">                   
+                            <a href="{% url 'project_details' project.id %}">
+                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+                            </a>
+                            <div class="card-body pb-0 h-auto">
+                                <p class="mb-0">{{project.name}}</p>
+                            </div>
+                            <div class="card-footer bg-white pt-0 border-0 text-left">
+                                <div class="row">
+                                    <div class="col">
+                                        {% if project.category %} 
+                                        <a class="text-muted" href="{%url 'projects'%}?category={{project.category.name}}">
+                                            {{project.category.friendly_name}}
+                                        </a>
+
+                                        <p class="lead mb-0 text-left">
+                                            {% if project.startDate %} 
+                                                {{project.startDate}} - {{project.endDate}}
+                                            {% else %}
+                                                Project expected to take {{project.expectedLength|timedelta:"{days_total} day(s)"}}
+                                            {% endif %}
+                                        </p>
+                                        
+                                        
+                                        <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
+                                        
+                                    
+                                        Thank you for funding this project!
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProject{{project.id}}">
+                                View Project Updates ({{project.update_set.all|length}})
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalProject{{project.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalProject{{project.id}}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalProject{{project.id}}Label">Updates for <strong>{{project}}</strong></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {%if project.update_set.all|length == 0%} 
+                                        No Updates For this project yet! stay tuned
+                                        {%else%}
+                                        {% for update in project.update_set.all reversed %}
+                                        <div class="card border-0">
+                                            <div class="card-body border-0">
+                                                <p class="mb-0 font-weight-bold">{{update.header}}</p>
+                                            </div>
+                                            <div class="card-footer bg-white pt-0 bnorder-0 text-left">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <p>{{update.created_on}}</p>
+                                                        <p style="white-space: pre-wrap">{{update.body}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {%endfor%}
+                                        {%endif%}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {%endif%}
+    
+                            
+                        </div>
+                        </div>
+                    </div>
+
+                    {% if forloop.counter|divisibleby:1%}
+                    <div class="col-12 d-sm-none">
+                        <hr>
+                    </div>
+                    {%endif%}
+                    {% if forloop.counter|divisibleby:2%}
+                    <div class="col-12 d-none d-sm-block d-md-block d-lg-none">
+                        <hr>
+                    </div>
+                    {%endif%}
+                    
+                    {% if forloop.counter|divisibleby:3%}
+                    <div class="col-12 d-none d-lg-block d-xl-block">
+                        <hr>
+                    </div>
+                    {%endif%}
                     
                 {% endfor %}
             </div>
