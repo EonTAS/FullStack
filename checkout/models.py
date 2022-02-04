@@ -30,7 +30,7 @@ class Commission(models.Model):
     commItem = models.OneToOneField(Project, null=True, blank=False, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, on_delete=models.SET_NULL)
 
-    stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
+    stripe_pid = models.CharField(unique=True, max_length=254, null=False, blank=False, default='')
     #create order uuid so its not easily guessable 
     def _generate_order_number(self):
         """
