@@ -27,7 +27,7 @@
         <div class="project-container col-10 offset-1">
             <div class="row mt-1 mb-2">
                 <div class="col-12 col-md-6 order-md-last d-flex justify-content-center justify-content-md-end">
-                    <select id="sort-selector" class="border-{%if sorting != 'None_None'%}info{%else%}black{%endif%}">
+                    <select id="sort-selector" class="border-{%if sorting != 'None_None'%}info{%else%}black{%endif%} rounded">
                         {% for possibleSorting in possibleSortings %}
                             <option value="{{possibleSorting.name}}" {%if sorting == possibleSorting.name%}selected{%endif%}>{{possibleSorting.friendlyName}}</option>
                         {% endfor %}
@@ -48,7 +48,7 @@
                                 <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
                             <div class="card-body pb-0">
-                                <p class="mb-0">{{ project.name }}</p>
+                                <p class="mb-0"><strong>{{ project.name }}</strong></p>
                             </div>
                             <div class="card-footer bg-white pt-0 bnorder-0 text-left">
                                 <div class="row">
@@ -69,6 +69,7 @@
                                         {% if project.price %}
                                             <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
                                         {% endif %}
+                                        <hr>
                                         {% if project.approved %}
                                             {% if project.commission %} 
                                                 <p>funded by {{project.commission.user}}</p>

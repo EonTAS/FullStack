@@ -72,8 +72,21 @@ body {
     position:fixed;
     z-index: 800;
     width:90%;
-    padding-top: 164px;
+    padding-top: 68px;
     left:5%
+}
+
+
+.nav-desktop>div>ul>li>a {
+    border-radius: 1rem;
+    background-color:#98A2A2;
+    padding:10px;
+
+}
+.nav-desktop>div>ul>li>a:hover {
+    background-color:#608080;
+    padding:10px;
+
 }
 /* -------------------------------- Media Queries */
 
@@ -95,14 +108,14 @@ body {
     }
 
     .header-container, .message-container{
-        padding-top: 164px;
+        padding-top: 68px;
     }
 }
 /* fixed top navbar only on medium and up */
 @media (max-width: 991px) {
 
     .header-container, .message-container{
-        padding-top: 116px;
+        padding-top: 100px;
     }
 
     body {
