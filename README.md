@@ -11,23 +11,48 @@ ER diagram:
 
 # User Stories :
 
+final = https://docs.google.com/spreadsheets/d/1jG73GFRLvYHsPywI3yQd7GhOhZQMBknOJv9utC2AUfU/edit#gid=0
+
 updated = https://docs.google.com/spreadsheets/d/1sFLzCsseC9m3GKSms0sC3RZ0PVqjxcl9ed3mu7amAZ0/edit#gid=1897577445
+
 old = https://docs.google.com/spreadsheets/d/1NcOiJ0tNaxB6tHOtiMbEldtN8dBKBVe7acP4-AYfuMU/edit#gid=0
+
+
+| As A..    | I want to be able to...                                                 | So that...                                                             |
+| --------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Site user |                                                                         |                                                                        |
+| \`        | Register                                                                | i can comment on, fund and suggest new projects                        |
+| \`        | Login                                                                   | i can access my account                                                |
+| \`        | Reset password                                                          | i can log in if i forget details                                       |
+| \`        | enable/disable emails                                                   | my preferences are followed                                            |
+| \`        | leave comments                                                          | my opinion is seen on the projects                                     |
+| \`        | View Details on a given project                                         | i can see whats being made                                             |
+| \`        | View Comments                                                           | i can view others views                                                |
+| Shopper   |                                                                         |                                                                        |
+| \`        | View all projects                                                       | i can see what kinds of things have been made/are currently being made |
+| \`        | Sort projects                                                           | i can see projects in an order i like                                  |
+| \`        | Search projects                                                         | i can find projects that fit in a description i like                   |
+| Suggester |                                                                         |                                                                        |
+| \`        | Suggest a project                                                       | my idea is seen and could be made                                      |
+| \`        | view all projects i've suggested                                        | i can go back and see if theres any changes to them                    |
+| \`        | view updates on projects i've suggested                                 | i can see what changes have been made                                  |
+| \`        | recieve email updates on projects i've suggested                        | i can be notified of updates                                           |
+| Funder    |                                                                         |                                                                        |
+| \`        | Fund a project                                                          | it can be made and i can know its being made                           |
+| \`        | Safely pay for funding with card and know that my purchase went through | my payment can be made and i can know it worked out                    |
+| \`        | View all projects i've funded                                           | i can go back and see if theres any changes to them                    |
+| \`        | view updates on projects i've funded                                    | i can see what changes have been made                                  |
+| \`        | recieve email updates on projects i've funded                           | i can be notified of updates                                           |
+| Admin     |                                                                         |                                                                        |
+| \`        | Edit a project thats already up                                         | its details can be adjusted to better fit what can actually be done    |
+| \`        | approve not yet approved projects so they are visible to all users      | it is visible to users to then fund                                    |
+| \`        | Delete bad projects                                                     | if its not fitting to the website it can be declined                   |
+| \`        | Currate comments/delete comments                                        | spam can be removed                                                    |
+| \`        | Send Project updates out                                                | the people who funded/suggested it can see what progress is being made |
 
 # Features :
 
-Accounts
-- viewing
-Administration
-- adding
-- editting
-- deleting
-Comments
-Updates
-Paying
-Suggesting
-Viewing past purchases
-login/logout
+
 
 # Typography and Color Scheme :
 
