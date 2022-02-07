@@ -232,7 +232,7 @@ def edit_project(request, id):
                 body += "Changes to project can be found below:\n"
                 body += changesString
             # create an update object with the changes, which automatically sends email to relevant users
-            a = Update(project=project, header=header, body=body)
+            a = Update(item=project, header=header, body=body)
             a.save()
 
             messages.success(request, 'Successfully updated product!')

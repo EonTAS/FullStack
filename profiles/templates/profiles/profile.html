@@ -191,11 +191,13 @@
                                             {% endif %}
                                         </p>
                                         
-                                        
                                         <p class="lead mb-0 text-left">Cost : £{{project.price}}</p>
-                                        
-                                    
-                                        Thank you for funding this project!
+
+                                        {% if not project.approved %}
+                                            <div type="button" class="btn btn-danger" data-toggle="modal">
+                                                Project Not Yet Approved
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
