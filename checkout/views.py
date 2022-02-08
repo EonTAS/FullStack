@@ -70,9 +70,10 @@ def checkout(request, id):
             try:
                 order.save()
             except IntegrityError as e: 
-                if not 'unique constraint' in e.message: # or e.args[0] from Django 1.10
+                if not 'unique constraint' in e.args[0]:
                     raise e
-            return redirect(reverse('checkout_success', args=[order.order_number]))
+            finally:
+                return redirect(reverse('checkout_success', args=[order.order_number]))
         messages.error(request, "There was an error with your form.")
     else:
         order_form = OrderForm()
