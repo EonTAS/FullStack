@@ -31,7 +31,7 @@ class StripeWebhook_Handler:
             try:
                 commission = Commission.objects.get(
                     full_name__iexact=shipping_details.name, 
-                    email__iexact=shipping_details.name, 
+                    email__iexact=billing_details.email, 
                     phone_number__iexact=shipping_details.phone,
                     country__iexact=shipping_details.address.country, 
                     postcode__iexact=shipping_details.address.postal_code, 
@@ -48,7 +48,7 @@ class StripeWebhook_Handler:
             except Commission.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
-
+        
         if comm_exists:
             #respond OK to stripe but dont add anything to database
             return HttpResponse(content=f'Webhook received: {event["type"]} | Order already in database', status=200)
