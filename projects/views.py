@@ -181,7 +181,7 @@ def add_project(request):
         if form.is_valid():
             item = form.save()
             messages.success(request, 'Successfully added item!')
-            return redirect(reverse('project_detail', args=[item.id]))
+            return redirect(reverse('project_details', args=[item.id]))
         else:
             messages.error(
                 request, 'Failed to add item. Please ensure the form is valid.')
