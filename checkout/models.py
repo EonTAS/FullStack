@@ -64,5 +64,5 @@ def sendUpdate(sender, instance, created, **kwargs):
             instance.commItem.save()
         header = f'Project {instance.commItem} funded for £{instance.order_price}'
         body = f"Thank you {instance.user} for funding {instance.commItem}. We will begin working on this project on {instance.commItem.startDate.strftime('%d-%m-%Y')}."
-        Update.objects.create(project=instance.commItem, header=header, body=body)
+        Update.objects.create(item=instance.commItem, header=header, body=body)
         
