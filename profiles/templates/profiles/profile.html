@@ -42,11 +42,11 @@
                         <div class="card h-100 border-0 ">
                             {%if project%}                      
                             <a href="{% url 'project_details' project.id %}">
-                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}/noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
                             {%else%}
                                 <p>
-                                    <img class="card-img-top img-fluid" src="{{ MEDIA_URL}}noimage.png" alt="unknown project">
+                                    <img class="card-img-top img-fluid" src="{{ MEDIA_URL}}/noimage.png" alt="unknown project">
                                 </p>
                             {%endif%}
                             <div class="card-body pb-0 h-auto">
@@ -170,7 +170,7 @@
                     <div class="col-sm-6 col-md-6 col-lg-4">
                         <div class="card h-100 border-0 ">                   
                             <a href="{% url 'project_details' project.id %}">
-                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}/noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
                             <div class="card-body pb-0 h-auto">
                                 <p class="mb-0">{{project.name}}</p>

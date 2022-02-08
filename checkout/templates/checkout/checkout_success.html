@@ -49,23 +49,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-6 py-5">
                     <div class="card h-10 border-0">
                         <h5 class="card-title">
+                            Thank you for your order
                             Your order information is below. A confirmation email will be sent to <strong>{{order.email}}</strong>
                         </h5>
                         <div class="card-body pb-0">
-                            <p>Name = {{order.full_name}}</p>
-                            <p>email = {{order.email}}</p>
-                            <p>phone = {{order.phone_number}}</p>
-                            <p>country = {{order.country}}</p>
-                            <p>postcode = {{order.postcode}}</p>
-                            <p>town_or_city = {{order.town_or_city}}</p>
-                            <p>streetaddress1 = {{order.street_address1}}</p>
-                            <p>streetaddress2 = {{order.street_address2}}</p>
-                            <p>county = {{order.county}}</p>
-
-                            order made on = {{order.date}}
+                            <h4>Full Name: <strong>{{order.full_name}}</strong></h4>
+                            <h4>Email Address: <strong>{{order.email}}</strong></h4>
+                            <h4>Phone Number: <strong>{{order.phone_number}}</strong></h4>
+                            <h4>Country: <strong>{{order.country}}</strong></h4>
+                            <h4>Postal Code: <strong>{{order.postcode}}</strong></h4>
+                            <h4>Town or City: <strong>{{order.town_or_city}}</strong></h4>
+                            <h4>streetaddress: <br>
+                                <strong>{{order.street_address1}}
+                                    {%if order.street_address2%}
+                                    <br>{{order.street_address2}}
+                                    {%endif%}
+                            </strong></h4>
+                            {%if order.county%}
+                                <h4>County: <strong>{{order.county}}</strong></h4>
+                            {%endif%}
+                            <hr>
+                            <p>
+                                Order Number : {{order.order_number}}
+                            </p>
+                            <p class="text-muted">
+                                {{order.date}}
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -45,7 +45,7 @@
                     <div class="col-sm-6 col-md-6 col-lg-3">
                         <div class="card h-100 border-0">
                             <a href="{% url 'project_details' project.id %}">
-                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}noimage.png{%endif%}" alt="{{project.name}}">
+                                <img class="card-img-top img-fluid" src="{% if project.image %}{{project.image.url}}{%else%}{{ MEDIA_URL}}/noimage.png{%endif%}" alt="{{project.name}}">
                             </a>
                             <div class="card-body pb-0">
                                 <p class="mb-0"><strong>{{ project.name }}</strong></p>
