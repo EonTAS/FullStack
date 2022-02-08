@@ -45,14 +45,16 @@ class Commission(models.Model):
         if it hasn't been set already.
         """
         if not self.order_number:
+            print("hi")
             self.order_number = self._generate_order_number()
+            print(len(self.order_number))
         #copy price over from commission item
         self.order_price = self.commItem.price
         
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.order_number
+        return str(self.commItem) + " " + self.order_number
 
 #detect when a payment is made and create an update for it
 @receiver(post_save, sender=Commission)

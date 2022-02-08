@@ -59,7 +59,7 @@ class Project(models.Model):
 class Message(models.Model):
     item = models.ForeignKey('Project', null=True,
                              blank=True, on_delete=models.SET_NULL)
-    header = models.CharField(max_length=30)
+    header = models.CharField(max_length=255)
     body = models.TextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
