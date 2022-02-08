@@ -58,14 +58,14 @@ class StripeWebhook_Handler:
             try:
                 commission = Commission.objects.create(
                     full_name=shipping_details.name, 
-                    email=shipping_details.name, 
+                    email=billing_details.email, 
                     phone_number=shipping_details.phone,
                     country=shipping_details.address.country, 
                     postcode=shipping_details.address.postal_code, 
                     town_or_city=shipping_details.address.city,
                     street_address1=shipping_details.address.line1,
                     street_address2=shipping_details.address.line2,
-                    county=shipping_details.address.state,
+                    county=shipping_details.address.state, 
                     commItem=item,
                     user=user,
                     stripe_pid=pid
