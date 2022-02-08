@@ -67,7 +67,11 @@ def checkout(request, id):
             order.user = request.user
             order.order_price = round(project.price * 100)
             order.stripe_pid = pid
-            order.save()
+            try:
+                order.save()
+            except IntegrityError as e: 
+                if 'unique constraint' in e.message: # or e.args[0] from Django 1.10
+                    return redirect(reverse('checkout_success', args=[order.order_number]))
             return redirect(reverse('checkout_success', args=[order.order_number]))
         messages.error(request, "There was an error with your form.")
     else:

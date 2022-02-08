@@ -70,6 +70,8 @@ class StripeWebhook_Handler:
                     stripe_pid=pid
                 )
             except Exception as e:
+                if 'unique constraint' in e.message: # or e.args[0] from Django 1.10
+                    return HttpResponse(content=f'Webhook received: {event["type"]} | Order already in database', status=200) 
                 #if adding failed in any way, cancel, delete and tell stripe it failed and retry later
                 if commission:
                     commission.delete()
