@@ -50,7 +50,7 @@
                                 </a>
                             </p>
                         {% endif %}
-                        {%if request.user == project.suggester or request.user == project.commission.user %}
+                        {%if request.user == project.suggester or request.user == project.commission.user or request.user.is_superuser%}
                             <button type="button" class="btn btn-secondary btn" data-toggle="modal" data-target="#modalProject">
                                 View Project Updates ({{project.update_set.all|length}})
                             </button>
