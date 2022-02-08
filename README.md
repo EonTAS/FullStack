@@ -1,12 +1,15 @@
 # Purpose of the Project :
 
-The aim of this project is to build a full-stack website that allows users to suggest and fund projects from me. It is intended to have a list of items that are suggested by users but must first must be approved by an admin before they are public and possible to be funded. Once a project is funded, the user who funded the project will recieve updates on the project. 
+The aim of this project is to build a full-stack website that allows users to suggest and fund projects from me. It is intended to have a list of items that are suggested by users but must first must be approved by an admin before they are public and possible to be funded. Once a project is funded, the user who funded the project will recieve updates on the project. All projects can be commented on by users
 
 # Database Plan
 
 ER diagram:
 
-<img src="ReadmeFiles/ER Diagram.png" width=33% height=33% alt="ER Diagram">
+<img src="testing/ER Diagram.png" width=33% height=33% alt="ER Diagram">
+
+
+# Visual Design :
 
 
 # User Stories :
@@ -28,7 +31,7 @@ old = https://docs.google.com/spreadsheets/d/1NcOiJ0tNaxB6tHOtiMbEldtN8dBKBVe7ac
 | \`        | leave comments                                                          | my opinion is seen on the projects                                     |
 | \`        | View Details on a given project                                         | i can see whats being made                                             |
 | \`        | View Comments                                                           | i can view others views                                                |
-| Shopper   |                                                                         |                                                                        |
+| Browser   |                                                                         |                                                                        |
 | \`        | View all projects                                                       | i can see what kinds of things have been made/are currently being made |
 | \`        | Sort projects                                                           | i can see projects in an order i like                                  |
 | \`        | Search projects                                                         | i can find projects that fit in a description i like                   |
@@ -52,13 +55,66 @@ old = https://docs.google.com/spreadsheets/d/1NcOiJ0tNaxB6tHOtiMbEldtN8dBKBVe7ac
 
 # Features :
 
+## User account : 
+
+implemented by django-allauth, extended in the "profiles" app to add a way for the user to enable/disable email updates. 
+
+## Projects :
+
+Mostly implemented in the projects django app
+
+- Suggesting :
+
+The user can suggest an idea that will be held for admin review and then can be funded
+
+- Viewing :
+
+A full list of all projects with sorting is available
+
+- Commenting :
+
+On all approved projects, there is a comment section at the bottom of the page and when logged in you can post your own comments
+
+## Moderation :
+
+- Project Edit :
+
+The ability to add/edit a given project to adjust expected time intervals, adjust description etc as well as approve a not yet approved project idea is available
+
+- Project Delete :
+
+a project can be deleted by admins, if this is done, purchase of it is not deleted, but the actual details are deleted.
+
+- Comment Delete :
+
+Admins can specifically delete any comments demed innapropriate. 
+
+## Payments : 
+
+Stripe used for user payments to allow an easy way to handle payments and track them longterm
+
+- Webhook stuff :
+
+Stripe webhooks are used so that if a user does something weird with the site/an error occurs causing the initial payment to not be stored, then stripe can send the payment through later to store to make sure it is saved to the database. 
+
+## Account :
+
+Most account stuff is handled through django's allauth,
+
+- Change settings : 
+
+the user has an additional option to enable/disable recieving email updates for projects they have suggested/funded.
+
+- View Bought/Checked :
+
+On the users page the list of all projects they have funded and a list of all projects they have suggested is available, each with a button to view updates for them.
 
 
-# Typography and Color Scheme :
+# Testing
+
+## [Client Story Testing found here](testing/clientStory.md)
 
 
-
-# Client Story Testing
 
 ## Formatting/Lighthouse tests
 
