@@ -14,6 +14,7 @@ class StripeWebhook_Handler:
         #if payment successful then add to database if the payment not already in the database
         intent = event.data.object
         pid = intent.id
+        print(pid)
         user = User.objects.get(id=intent.metadata.user)
         item = Project.objects.get(id=intent.metadata.item)
 
