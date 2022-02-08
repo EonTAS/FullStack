@@ -5,9 +5,9 @@
     "fields": {
       "name": "mods",
       "friendly_name": "Codes and Mods",
-      "examplePrice_shortterm": 10.0,
-      "examplePrice_midterm": 20.0,
-      "examplePrice_longterm": 30.0
+      "examplePrice_shortterm": 20.0,
+      "examplePrice_midterm": 40.0,
+      "examplePrice_longterm": 60.0
     }
   },
   {
