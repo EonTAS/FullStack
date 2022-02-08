@@ -31,9 +31,10 @@ class ProjectSuggestForm(forms.ModelForm):
         instance = super(ProjectSuggestForm, self).save(commit=False)
         #convert scale given to a timedelta object
         scale = self.cleaned_data["scale"]
+        print(scale)
         if (scale == "shortterm"):
            instance.expectedLength = timedelta(days=2*7) #2 weeks
-        elif (scale == "midterm"):
+        elif (scale == "mediumterm"):
            instance.expectedLength = timedelta(days=4*7) #4 weeks
         elif (scale == "longterm"):
            instance.expectedLength = timedelta(days=12*7) #12 weeks
