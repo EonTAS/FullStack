@@ -40,7 +40,7 @@ class ProjectSuggestForm(forms.ModelForm):
         #ensure approved is set to false
         instance.approved = False
         #calculate price from scale + category in the costDistribution table
-        instance.price = costDistribution[str(scale) + " " + str(instance.category)]
+        instance.price = costDistribution[str(scale) + str(instance.category.id)]
         instance.suggester = suggester
 
         if commit:

@@ -161,7 +161,7 @@ def project_request(request):
 
             messages.success(
                 request, "Project idea submitted, you will recieve an email when it is approved for purchase")
-            return redirect(redirect('projects'))
+            return redirect('projects')
     else:
         project_form = ProjectSuggestForm()
 
