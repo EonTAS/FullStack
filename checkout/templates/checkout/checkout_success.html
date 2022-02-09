@@ -35,7 +35,11 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="project-details-container mb-5 mt-md-5">
-                                <p class="lead mb-0 text-left">{{project.startDate}} - {{project.endDate}}</p>
+                                {% if project.startDate %} 
+                                <p class="lead mb-0 text-left">{{project.startDate}} - {{projectEndDate}}</p>
+                                {%else%}
+                                <p class="lead mb-0 text-left">Project expected to take {{project.expectedLength|timedelta:"{days_total} day(s)"}}</p>
+                                {%endif%}
                                 <p class="lead mb-0 text-left font-weight-bold">Funding cost: £{{ project.price }}</p>
                                 {% if project.category %}
                                     <p class="small mt-1 mb-0">

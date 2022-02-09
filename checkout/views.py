@@ -84,6 +84,9 @@ def checkout(request, id):
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,
     }
+    
+    if project.startDate:  # calc an enddate if a startdate specified
+        context["projectEndDate"] = project.startDate + project.expectedLength
     return render(request, "checkout/checkout.html", context)
 
 
@@ -97,4 +100,8 @@ def checkout_success(request, order_number):
         'order': order,
         'project': order.commItem
     }
+    
+    if project.startDate:  # calc an enddate if a startdate specified
+        context["projectEndDate"] = project.startDate + project.expectedLength
+        
     return render(request, "checkout/checkout_success.html", context)
