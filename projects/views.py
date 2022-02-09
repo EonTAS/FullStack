@@ -198,7 +198,6 @@ def add_project(request):
 def edit_project(request, id):
     # project to be editted has primary key of id
     project = get_object_or_404(Project, pk=id)
-    
     if request.method == 'POST':
         # save current state of project so that when its editted changes can easily be detected
         prevState = copy(project)
@@ -218,7 +217,7 @@ def edit_project(request, id):
             header = "Project Changed"
             if prevState.approved != project.approved:
                 if project.approved == True:
-                    body = f"Project has been approved and can now be funded at {request.META['HTTP_HOST'] + reverse('project_details', args=[1])}\n"
+                    body = f"Project has been approved and can now be funded at {request.build_absolute_uri( reverse('project_details', args=[project.id]))}\n"
                     header = "Project Approved!"
                 else:
                     body = "Project has been unapproved and can no longer be funded until reapproved\n"
