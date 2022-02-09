@@ -101,7 +101,7 @@ def checkout_success(request, order_number):
         'project': order.commItem
     }
     
-    if project.startDate:  # calc an enddate if a startdate specified
-        context["projectEndDate"] = project.startDate + project.expectedLength
-        
+    if order.commItem.startDate:  # calc an enddate if a startdate specified
+        context["projectEndDate"] = order.commItem.startDate + order.commItem.expectedLength
+
     return render(request, "checkout/checkout_success.html", context)
