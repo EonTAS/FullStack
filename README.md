@@ -1,26 +1,22 @@
 # Purpose of the Project :
 
-The aim of this project is to build a full-stack website that allows users to suggest and fund projects from me. It is intended to have a list of items that are suggested by users but must first must be approved by an admin before they are public and possible to be funded. Once a project is funded, the user who funded the project will recieve updates on the project. All projects can be commented on by users
+The aim of this project is to build a full-stack website that allows users to suggest and fund projects from me. It is intended to have a list of items that are suggested by users but must first must be approved by an admin before they are public and possible to be funded. Once a project is funded, the user who funded the project will recieve updates on the project. All projects can be commented on by users.
 
 # Database Plan
 
 ER diagram:
 
-
 ![ERDiagram](/testing/ERDiagram.png)
-
 
 # Visual Design :
 
+The page is a top white bar that lets the user navigate to a page with all suggested projects and a button to submit a new project. A search bar will always be accessible and a user page will be available top right.
+
+Viewing list of projects will draw an array of cards that can then be clicked and viewed individually with more detail. Underneath the extra detail is comments and if the user can fund the project, a button to do so and go to a checkout is available.
+
+Suggesting a project will be a form that lets you upload an image and select a timeframe/category, and it will give a preliminary pricing for the item before it is decided for sure on review.
 
 # User Stories :
-
-final = https://docs.google.com/spreadsheets/d/1jG73GFRLvYHsPywI3yQd7GhOhZQMBknOJv9utC2AUfU/edit#gid=0
-
-updated = https://docs.google.com/spreadsheets/d/1sFLzCsseC9m3GKSms0sC3RZ0PVqjxcl9ed3mu7amAZ0/edit#gid=1897577445
-
-old = https://docs.google.com/spreadsheets/d/1NcOiJ0tNaxB6tHOtiMbEldtN8dBKBVe7acP4-AYfuMU/edit#gid=0
-
 
 | As A..    | I want to be able to...                                                 | So that...                                                             |
 | --------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -82,6 +78,8 @@ On all approved projects, there is a comment section at the bottom of the page a
 
 The ability to add/edit a given project to adjust expected time intervals, adjust description etc as well as approve a not yet approved project idea is available
 
+Admins can approve projects and every not-yet approved project is marked as such. They also gain the ability to sort by approved first/last in the all-projects page.
+
 - Project Delete :
 
 a project can be deleted by admins, if this is done, purchase of it is not deleted, but the actual details are deleted.
@@ -116,35 +114,36 @@ On the users page the list of all projects they have funded and a list of all pr
 ## [Client Story Testing found here](testing/clientStory.md)
 
 
+## Mobile Layout
 
-## Formatting/Lighthouse tests
-
-
-### Lighthouse
-
-Page | Desktop: | Performance | Accessibility | Best Practices | Mobile: | Performance | Accessibility | Best Practices 
---- | --- | --- | --- | --- |--- |--- |--- |--- |
-
-
+<img src="testing/layout.gif" width=33% height=33% alt="layout">
 
 # Deployment
 
-create heroku
-add postgres resource addon
-pip install dj_database_url and psycopg2-binary 
-import dj_database_url into settings.py and replace teh DATABASES object with url from heroku
-superuser = u="admin" p="admin" e="exampleemail@email.com"
-import gunicorn
-setup procfile
-disable heroku collectstatic
+This project was deployed using heroku to host the site and the main database, and then using amazon webservices to host the images and static files.
 
-push to heroku with
-heroku git:remote -a ci-eoncustoms
-git push heroku main, master doesnt work for me for some reason
+## Heroku
 
-add all the environ things
+To deploy this page to heroku, the initial heroku app was made and it was linked to the project through syncing with the git. 
 
-amazon webservices setup
-    why i have to enter card details ahhh
+In heroku settings, the django-postgres addon is then enabled to handle the database setup. The database url/key were then taken from django environment urls, and loaded locally temporarily so that django migrations could be applied to the new database (and to re-add the admin superuser). 
 
-install boto3 django-storages
+The django setup was updated to have the dj_database_url, psycopg2-binary and gunicorn modules and a procfile made to use gunicorn.
+
+Environment variables made for 
+
+- EMAIL_HOST_USER and EMAIL_HOST_PASS
+- SECRET_KEY, STRIPE_PUBLIC_KEY, STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET
+
+## Amazon webservices
+
+After signing up for AWS, a User Group through the Identity and Access Management system was created and then a new Bucket was made through S3. 
+
+The keys created in this creation were then added to the django setup in the environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY. 
+
+The django file is set up such that if environment variable "USE_AWS" is set that it will read those environment variables and save data into it instead of the page.
+
+
+# Site
+
+Page can be found at : https://ci-eoncustoms.herokuapp.com/
