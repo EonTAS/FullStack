@@ -73,12 +73,12 @@ class StripeWebhook_Handler:
                 )
             except Exception as e:
                 if 'unique constraint' in e.args[0]:
-                    return HttpResponse(content=f'Webhook received: {event["type"]} | Order already in database', status=200) 
+                    return HttpResponse(content=f'Webhook received: {event["type"]} | Order already in database', status=200)
                 # if adding failed in any way, cancel, delete and tell stripe it failed and retry later
                 if commission:
                     commission.delete()
                 return HttpResponse(content=f'Webhook received: {event["type"]} | ERROR {e}', status=500)
-        return HttpResponse(content=f'Webhook received: {event["type"]} | SUCCESS order added to database', status=200) 
+        return HttpResponse(content=f'Webhook received: {event["type"]} | SUCCESS order added to database', status=200)
 
     def handle_payment_intent_failed(self, event):
         return HttpResponse(content=f'Webhook received: {event["type"]}', status=200)

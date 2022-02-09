@@ -18,11 +18,11 @@ def webhook(request):
 
     wh_secret = settings.STRIPE_WEBHOOK_SECRET
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    #stripe way to handle a webhook and get the event out of it
+    # stripe way to handle a webhook and get the event out of it
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, wh_secret
-        ) 
+        )
     except ValueError as e:
         # Invalid payload
         return HttpResponse(status=400)
@@ -33,7 +33,7 @@ def webhook(request):
         print('Unhandled event type {}'.format(event['type']))
         return HttpResponse(content=e, status=400)
 
-    #gets handler from the webhooks_handler file to take this event
+    # gets handler from the webhooks_handler file to take this event
     handler = StripeWebhook_Handler(request)
 
     event_map = {

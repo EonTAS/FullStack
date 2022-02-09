@@ -137,6 +137,7 @@ def project_details(request, id):
 
     return render(request, "projects/project_details.html", context)
 
+
 def project_request(request):
     # only allow users who are logged in to submit a request
     if not request.user.is_authenticated:
@@ -147,10 +148,13 @@ def project_request(request):
     # suggested cost layout of category + timeframe
     costDistribution = {}
     for category in Category.objects.all():
-        costDistribution["shortterm" + str(category.id)] = float(category.examplePrice_shortterm)
-        costDistribution["mediumterm" + str(category.id)] = float(category.examplePrice_midterm)
-        costDistribution["longterm" + str(category.id)] = float(category.examplePrice_longterm)
-    
+        costDistribution["shortterm" +
+                         str(category.id)] = float(category.examplePrice_shortterm)
+        costDistribution["mediumterm" +
+                         str(category.id)] = float(category.examplePrice_midterm)
+        costDistribution["longterm" +
+                         str(category.id)] = float(category.examplePrice_longterm)
+
     if request.method == 'POST':
         project_form = ProjectSuggestForm(request.POST, request.FILES)
         if project_form.is_valid():

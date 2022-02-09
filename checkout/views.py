@@ -69,7 +69,7 @@ def checkout(request, id):
             order.stripe_pid = pid
             try:
                 order.save()
-            except IntegrityError as e: 
+            except IntegrityError as e:
                 if not 'unique constraint' in e.args[0]:
                     raise e
             finally:
@@ -84,7 +84,7 @@ def checkout(request, id):
         'stripe_public_key': stripe_public_key,
         'client_secret': intent.client_secret,
     }
-    
+
     if project.startDate:  # calc an enddate if a startdate specified
         context["projectEndDate"] = project.startDate + project.expectedLength
     return render(request, "checkout/checkout.html", context)
@@ -100,8 +100,9 @@ def checkout_success(request, order_number):
         'order': order,
         'project': order.commItem
     }
-    
+
     if order.commItem.startDate:  # calc an enddate if a startdate specified
-        context["projectEndDate"] = order.commItem.startDate + order.commItem.expectedLength
+        context["projectEndDate"] = order.commItem.startDate + \
+            order.commItem.expectedLength
 
     return render(request, "checkout/checkout_success.html", context)

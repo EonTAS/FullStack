@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-#add a new field to user objects by creating a one to one field with the user that can be accessed always
+# add a new field to user objects by creating a one to one field with the user that can be accessed always
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_updates = models.BooleanField(default=True)

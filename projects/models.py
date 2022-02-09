@@ -16,7 +16,8 @@ class Category(models.Model):
     name = models.CharField(max_length=254)
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
 
-    examplePrice_shortterm = models.DecimalField(max_digits=6, decimal_places=2)
+    examplePrice_shortterm = models.DecimalField(
+        max_digits=6, decimal_places=2)
     examplePrice_midterm = models.DecimalField(max_digits=6, decimal_places=2)
     examplePrice_longterm = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -97,7 +98,7 @@ class Update(Message):  # associated with account, account views all they have f
                     body,
                     None,
                     [suggester.email, ],
-                    fail_silently = False
+                    fail_silently=False
                 )
         else:  # else check each setting individually and send seperate emails
             if suggester.userprofile.email_updates:
@@ -107,7 +108,7 @@ class Update(Message):  # associated with account, account views all they have f
                     body,
                     None,
                     [suggester.email],
-                    fail_silently = False
+                    fail_silently=False
                 )
             if funder and funder.userprofile.email_updates:  # only send to funder if they exist
                 send_mail(
@@ -115,7 +116,7 @@ class Update(Message):  # associated with account, account views all they have f
                     body,
                     None,
                     [funder.email],
-                    fail_silently = False
+                    fail_silently=False
                 )
 
 
