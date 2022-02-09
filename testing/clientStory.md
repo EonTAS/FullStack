@@ -49,7 +49,7 @@ user can register for an account in top right options
 
 1 comment 
 
-![Comment - view one](/testing/user/Comment-persists.png)
+![Comment - view one](/testing/user/comment-persists.png)
 
 multiple comments, not logged in as either
 
