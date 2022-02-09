@@ -86,7 +86,7 @@ class Update(Message):  # associated with account, account views all they have f
         # if the item doesnt have a related commission, funder doesnt exist so set to None
         try:
             funder = self.item.commission.user
-        except ObjectDoesNotExist as e:
+        except Exception as e:
             funder = None
         body = self.body + \
             "\n\nIf you have any issue, please respond to this email and we will get back to you (not really this is a fake email)"
