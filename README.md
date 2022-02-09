@@ -6,7 +6,8 @@ The aim of this project is to build a full-stack website that allows users to su
 
 ER diagram:
 
-<img src="testing/ER Diagram.png" width=33% height=33% alt="ER Diagram">
+
+![ERDiagram](/testing/ERDiagram.png)
 
 
 # Visual Design :

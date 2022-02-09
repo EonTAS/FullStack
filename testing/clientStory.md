@@ -1,18 +1,59 @@
 # As a User
 
+I_am_a_User pass12jk
+
 ## Register
+user can register for an account in top right options
+
+![Register - option](/testing/user/Register-Option.png)
+
+![Register - Page](/testing/user/Register-page.png)
+
+![Register - Verify](/testing/user/Register-Verify.png)
+
+![Register - Verification Email](/testing/user/Register-Verificationemail.png)
+
+![Register - Verified](/testing/user/Register-verified.png)
 
 ## Login
 
+![Login - Page](/testing/user/LogIn-Page.png)
+
+![Loggedin](/testing/user/Loggedin.png)
+
 ## Reset password
+
+![Password - ResetPage](/testing/user/Password-ResetPage.png)
+
+![Password - ResetEmail](/testing/user/Password-ResetEmail.png)
 
 ## enable/disable emails
 
+![EmailSetting - Visible](/testing/user/EmailSetting-Visible.png)
+
+![EmailSetting - Saves](/testing/user/EmailSetting-SavesWhenChanged.png)
+
 ## leave comments
+
+![Comment - Before](/testing/user/Comment-Before.png)
+
+![Comment - after](/testing/user/Comment-after.png)
 
 ## View Details on a given project
 
+
+![Project - view](/testing/user/Project-view.png)
+
+
 ## View Comments
+
+1 comment 
+
+![Comment - view one](/testing/user/Comment-persists.png)
+
+multiple comments, not logged in as either
+
+![Comment - view one](/testing/user/comment-multiple.png)
 
 # As a browser
 
