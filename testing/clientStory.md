@@ -1,6 +1,5 @@
 # As a User
 
-I_am_a_User pass12jk
 
 ## Register
 user can register for an account in top right options
