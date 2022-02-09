@@ -137,7 +137,6 @@ def project_details(request, id):
 
     return render(request, "projects/project_details.html", context)
 
-
 def project_request(request):
     # only allow users who are logged in to submit a request
     if not request.user.is_authenticated:
@@ -199,15 +198,13 @@ def add_project(request):
 def edit_project(request, id):
     # project to be editted has primary key of id
     project = get_object_or_404(Project, pk=id)
-
+    
     if request.method == 'POST':
         # save current state of project so that when its editted changes can easily be detected
         prevState = copy(project)
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
-
-            body = "Your project has been approved and can now be funded at $asdf\nAdditional changes found below:\n"
 
             newState = project
             changesString = ""
@@ -221,7 +218,7 @@ def edit_project(request, id):
             header = "Project Changed"
             if prevState.approved != project.approved:
                 if project.approved == True:
-                    body = "Project has been approved and can now be funded at $asdf\n"
+                    body = f"Project has been approved and can now be funded at {request.META['HTTP_HOST'] + reverse('project_details', args=[1])}\n"
                     header = "Project Approved!"
                 else:
                     body = "Project has been unapproved and can no longer be funded until reapproved\n"
