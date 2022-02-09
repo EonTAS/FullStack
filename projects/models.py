@@ -96,22 +96,26 @@ class Update(Message):  # associated with account, account views all they have f
                     f'Hi {suggester} : New update for suggested and funded project {self.item} - {self.header}',
                     body,
                     None,
-                    [{suggester.email}]
+                    [suggester.email, ],
+                    fail_silently = False
                 )
         else:  # else check each setting individually and send seperate emails
             if suggester.userprofile.email_updates:
+                print("hi")
                 send_mail(
                     f'Hi {suggester} : New update for suggested idea {self.item} - {self.header}',
                     body,
                     None,
-                    [{suggester.email}]
+                    [suggester.email],
+                    fail_silently = False
                 )
             if funder and funder.userprofile.email_updates:  # only send to funder if they exist
                 send_mail(
                     f'Hi {funder} : New update for funded project {self.item} - {self.header}',
                     body,
                     None,
-                    [{funder.email}]
+                    [funder.email],
+                    fail_silently = False
                 )
 
 
