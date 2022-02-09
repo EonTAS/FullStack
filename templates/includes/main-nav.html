@@ -6,9 +6,9 @@
             </a>
             <div class="dropdown-menu border-0" aria-labelledby="typeFilter">
                 <a href="{% url 'projects' %}" class="dropdown-item"><b>All</b></a>
-                <a href="{% url 'projects' %}?category=mods" class="dropdown-item">Codes and Mods</a>
-                <a href="{% url 'projects' %}?category=art" class="dropdown-item">Art</a>
-                <a href="{% url 'projects' %}?category=misc" class="dropdown-item">Misc</a>
+                {%for c in all_categories%}
+                    <a href="{% url 'projects' %}?category={{c.name}}" class="dropdown-item">{{c}}</a>
+                {%endfor%}
             </div>
         </li>
 
